@@ -1,11 +1,32 @@
 "use client";
 
-import React from "react";
-import { ReactLenis } from "lenis/react";
+import React, { useEffect } from "react";
+import { ReactLenis, useLenis } from "lenis/react";
 import { LazyMotion, MotionConfig, domAnimation } from "motion/react";
 
 interface AppProvidersProps {
   children: React.ReactNode;
+}
+
+function ScrollResetOnMount() {
+  const lenis = useLenis();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+  }, [lenis]);
+
+  return null;
 }
 
 export function AppProviders({ children }: AppProvidersProps) {
@@ -28,6 +49,7 @@ export function AppProviders({ children }: AppProvidersProps) {
             respectReducedMotion: true,
           }}
         >
+          <ScrollResetOnMount />
           {children}
         </ReactLenis>
       </LazyMotion>

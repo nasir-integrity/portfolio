@@ -8,16 +8,19 @@ import { ActFooterCta } from "@/components/sections/act-footer-cta";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-paper text-obsidian selection:bg-vermillion selection:text-paper">
+    <div className="relative min-h-screen bg-obsidian text-obsidian selection:bg-vermillion selection:text-paper">
       <SiteHeader />
-      <main>
-        <ActHero />
+      <ActHero />
+      {/* Sliding Curtain Container: Slides over the sticky hero */}
+      <main className="relative z-10 bg-paper shadow-[0_-30px_70px_rgba(0,0,0,0.85)]">
         <ActProblemStandards />
         <ActPipelineScrollytelling />
         <ActArchitectureScope />
         <ActTeamProfiles />
       </main>
-      <ActFooterCta />
+      <div className="relative z-10 bg-obsidian">
+        <ActFooterCta />
+      </div>
     </div>
   );
 }

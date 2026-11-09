@@ -83,6 +83,11 @@
   filter: saturate(1) contrast(1);
 }
 
+/* Subtle Industrial Glitch Micro-Shift */
+.text-shadow-glitch {
+  text-shadow: -1.5px 0 rgba(255, 59, 0, 0.8), 1.5px 0 rgba(0, 200, 255, 0.5);
+}
+
 /* Global 4-Tier Typographic System */
 .type-section-header {
   font-family: var(--font-sans);

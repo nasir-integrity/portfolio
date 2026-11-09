@@ -28,7 +28,7 @@ export function ActProblemStandards() {
       <div className="section-pad border-b border-obsidian flex flex-col lg:flex-row lg:items-end justify-between gap-10">
         <div className="max-w-4xl">
           <h2 className="type-section-header text-obsidian">
-            TRIAGE SCORES ARE NOT CARBON TONNAGE.
+            <ScrambleText text="TRIAGE SCORES ARE NOT CARBON TONNAGE." />
           </h2>
         </div>
         <p className="type-body text-steel">

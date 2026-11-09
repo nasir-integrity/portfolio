@@ -20,7 +20,7 @@ export function ActArchitectureScope() {
         {/* Section Heading */}
         <div className="max-w-4xl mb-16 lg:mb-20">
           <h2 className="type-section-header text-obsidian mb-6">
-            ENGINEERING ARCHITECTURE
+            <ScrambleText text="ENGINEERING ARCHITECTURE" />
           </h2>
           <p className="type-body text-steel">
             Deterministic domain engines, real-time spatial digital twins, and

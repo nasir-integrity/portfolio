@@ -16,7 +16,7 @@ export function ActTeamProfiles() {
         {/* Section Heading */}
         <div className="max-w-4xl mb-16 lg:mb-24">
           <h2 className="type-section-header text-obsidian mb-6">
-            THE INTEGRITY TEAM
+            <ScrambleText text="THE INTEGRITY TEAM" />
           </h2>
           <p className="type-body text-steel">
             Developed by software engineering researchers from Sekolah Vokasi

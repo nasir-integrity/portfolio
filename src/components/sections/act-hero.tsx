@@ -7,7 +7,7 @@ import * as m from "motion/react-m";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { useLenis } from "lenis/react";
 import { Button } from "@/components/ui/button";
-import { DecodeText } from "@/components/ui/decode-text";
+import { ScrambleText } from "@/components/ui/scramble-text";
 
 const FacilityHeroScene = dynamic(
   () => import("@/components/scenes/facility-hero-scene"),
@@ -74,11 +74,15 @@ export function ActHero() {
           className="relative z-20 w-full max-w-7xl px-6 sm:px-12 lg:px-20 py-20 pointer-events-auto"
         >
           <h1 className="type-section-header text-paper mb-8">
-            <DecodeText text="TRACEABLE" as="span" />
+            <ScrambleText text="TRACEABLE" />
             <br />
-            <span className="text-vermillion">INTEGRITY</span>
+            <span className="text-vermillion">
+              <ScrambleText text="INTEGRITY" />
+            </span>
             <br />
-            <span>&amp; CH4 RISK.</span>
+            <span>
+              <ScrambleText text="& CH4 RISK." />
+            </span>
           </h1>
 
           <p className="type-body text-paper/85 mb-12">

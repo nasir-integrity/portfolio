@@ -37,7 +37,7 @@ export function ActPipelineScrollytelling() {
         {/* 1. Header Bar */}
         <div className="border-b border-obsidian px-6 sm:px-12 lg:px-20 py-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h2 className="type-title text-obsidian">
-            THE TELEMETRY LIFECYCLE
+            <ScrambleText text="THE TELEMETRY LIFECYCLE" />
           </h2>
           <div className="type-action text-steel flex items-center gap-3">
             <span className="h-2 w-2 bg-vermillion animate-pulse" />

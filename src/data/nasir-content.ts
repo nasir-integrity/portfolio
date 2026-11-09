@@ -43,7 +43,7 @@ export const NASIR_TEAM_MEMBERS: TeamMemberSpec[] = [
     initials: "RFA",
     institution: "Sekolah Vokasi IPB University",
     program: "Teknologi Rekayasa Perangkat Lunak",
-    portfolioUrl: "https://github.com/ZimrionVarethos/pertamuda",
+    portfolioUrl: "https://rafifakhrialaudin.netlify.app/",
     portfolioLabel: "VIEW PROFILE",
   },
   {
@@ -53,7 +53,7 @@ export const NASIR_TEAM_MEMBERS: TeamMemberSpec[] = [
     initials: "MFA",
     institution: "Sekolah Vokasi IPB University",
     program: "Teknologi Rekayasa Perangkat Lunak",
-    portfolioUrl: "https://github.com/ZimrionVarethos",
+    portfolioUrl: "https://zimv.is-a.dev/",
     portfolioLabel: "VIEW PROFILE",
   },
   {
@@ -63,8 +63,8 @@ export const NASIR_TEAM_MEMBERS: TeamMemberSpec[] = [
     initials: "DBR",
     institution: "Sekolah Vokasi IPB University",
     program: "Teknologi Rekayasa Perangkat Lunak",
-    portfolioUrl: "https://daffabisma.com",
-    portfolioLabel: "DAFFABISMA.COM",
+    portfolioUrl: "https://daffabeez.vercel.app/",
+    portfolioLabel: "VIEW PROFILE",
   },
 ];
 

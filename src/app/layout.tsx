@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
-import localFont from "next/font/local";
 import "./globals.css";
 import { AppProviders } from "@/components/providers/app-providers";
 
@@ -18,26 +17,9 @@ const geistMono = Geist_Mono({
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-header-google",
+  variable: "--font-header",
   display: "swap",
   weight: ["400", "500", "700", "800"],
-});
-
-const jetbrainsMonoLocal = localFont({
-  src: [
-    {
-      path: "../../public/fonts/JetBrainsMono-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/JetBrainsMono-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-header-local",
-  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -82,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${jetbrainsMonoLocal.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen bg-paper text-obsidian antialiased">
         <AppProviders>{children}</AppProviders>

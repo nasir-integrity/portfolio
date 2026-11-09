@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import { useInView } from "motion/react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { ContactShadows, Float, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -13,9 +14,16 @@ export function Standards3DScene({
 }: {
   variant: "integrity" | "emissions";
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px" });
+
   return (
-    <div className="relative w-full h-[320px] sm:h-[400px] min-h-0 overflow-hidden bg-obsidian-elevated/70 border border-hairline-dark/60 chamfer-tr">
+    <div
+      ref={containerRef}
+      className="relative w-full h-[320px] sm:h-[400px] min-h-0 overflow-hidden bg-obsidian-elevated/70 border border-hairline-dark/60 chamfer-tr"
+    >
       <Canvas
+        frameloop={isInView ? "always" : "never"}
         camera={{ position: [2.8, 1.8, 3.2], fov: 42 }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 1.5]}
@@ -171,9 +179,16 @@ function FugitiveEmissionsMesh() {
  * Spans the full height and width of the right column without inner borders or frames.
  */
 export function PipelineStage3DScene({ stepIndex }: { stepIndex: number }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px" });
+
   return (
-    <div className="relative w-full h-full min-h-[440px] sm:min-h-[500px] lg:min-h-full overflow-hidden bg-obsidian flex items-center justify-center">
+    <div
+      ref={containerRef}
+      className="relative w-full h-full min-h-[440px] sm:min-h-[500px] lg:min-h-full overflow-hidden bg-obsidian flex items-center justify-center"
+    >
       <Canvas
+        frameloop={isInView ? "always" : "never"}
         camera={{ position: [3.4, 2.2, 3.8], fov: 40 }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 1.5]}
@@ -443,11 +458,17 @@ function PipelineObjectByStage({ stepIndex }: { stepIndex: number }) {
  * 3. Architecture 3D Visualization: Exploded Isometric Stack
  */
 export function Architecture3DScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px" });
   const groupRef = useRef<THREE.Group>(null);
 
   return (
-    <div className="relative w-full h-[380px] sm:h-[460px] min-h-0 overflow-hidden bg-obsidian-elevated/70 border border-hairline-dark/60 chamfer-tr">
+    <div
+      ref={containerRef}
+      className="relative w-full h-[380px] sm:h-[460px] min-h-0 overflow-hidden bg-obsidian-elevated/70 border border-hairline-dark/60 chamfer-tr"
+    >
       <Canvas
+        frameloop={isInView ? "always" : "never"}
         camera={{ position: [3.2, 2.8, 3.4], fov: 42 }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 1.5]}

@@ -1,11 +1,27 @@
 "use client";
 
 import React, { useRef } from "react";
+import dynamic from "next/dynamic";
 import { useScroll, useTransform } from "motion/react";
 import * as m from "motion/react-m";
 import { STANDARDS_COMPARISONS } from "@/data/nasir-content";
-import { Standards3DScene } from "@/components/scenes/domain-visual-scenes";
 import { ScrambleText } from "@/components/ui/scramble-text";
+
+const Standards3DScene = dynamic(
+  () =>
+    import("@/components/scenes/domain-visual-scenes").then(
+      (mod) => mod.Standards3DScene
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="relative w-full h-[320px] sm:h-[400px] min-h-0 bg-obsidian-elevated/70 border border-hairline-dark/60 chamfer-tr flex items-center justify-center font-mono text-xs uppercase tracking-[0.18em] text-steel-light">
+        <span className="inline-block h-2 w-2 bg-vermillion mr-2.5 animate-pulse" />
+        INITIALIZING COMPLIANCE MODEL...
+      </div>
+    ),
+  }
+);
 
 export function ActProblemStandards() {
   const sectionRef = useRef<HTMLElement>(null);

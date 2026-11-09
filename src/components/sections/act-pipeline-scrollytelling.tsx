@@ -1,11 +1,27 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import * as m from "motion/react-m";
 import { PIPELINE_STAGES } from "@/data/nasir-content";
-import { PipelineStage3DScene } from "@/components/scenes/domain-visual-scenes";
 import { ScrambleText } from "@/components/ui/scramble-text";
+
+const PipelineStage3DScene = dynamic(
+  () =>
+    import("@/components/scenes/domain-visual-scenes").then(
+      (mod) => mod.PipelineStage3DScene
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full w-full items-center justify-center bg-obsidian font-mono text-xs uppercase tracking-[0.18em] text-steel-light">
+        <span className="inline-block h-2 w-2 bg-vermillion mr-2.5 animate-pulse" />
+        INITIALIZING PIPELINE STAGE...
+      </div>
+    ),
+  }
+);
 
 export function ActPipelineScrollytelling() {
   const containerRef = useRef<HTMLElement>(null);

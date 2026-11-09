@@ -1,12 +1,28 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import * as m from "motion/react-m";
 import { ArrowUpRight } from "lucide-react";
 import { ARCHITECTURE_LAYERS } from "@/data/nasir-content";
-import { Architecture3DScene } from "@/components/scenes/domain-visual-scenes";
 import { Button } from "@/components/ui/button";
 import { ScrambleText } from "@/components/ui/scramble-text";
+
+const Architecture3DScene = dynamic(
+  () =>
+    import("@/components/scenes/domain-visual-scenes").then(
+      (mod) => mod.Architecture3DScene
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="relative w-full h-[380px] sm:h-[460px] min-h-0 bg-obsidian-elevated/70 border border-hairline-dark/60 chamfer-tr flex items-center justify-center font-mono text-xs uppercase tracking-[0.18em] text-steel-light">
+        <span className="inline-block h-2 w-2 bg-vermillion mr-2.5 animate-pulse" />
+        INITIALIZING ARCHITECTURE STACK...
+      </div>
+    ),
+  }
+);
 
 export function ActArchitectureScope() {
   const [activeLayerIdx, setActiveLayerIdx] = useState<number>(0);

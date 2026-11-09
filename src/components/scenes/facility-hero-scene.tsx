@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { useInView } from "motion/react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Float, Grid, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -382,9 +383,23 @@ export default function FacilityHeroScene({
   className = "w-full h-full",
   scrollProgress = 0,
 }: FacilityHeroSceneProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "100px" });
+
+  const handleCreated = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("nasir:hero-ready"));
+    }
+  };
+
   return (
-    <div className={`relative ${className} min-h-0 overflow-hidden`}>
+    <div
+      ref={containerRef}
+      className={`relative ${className} min-h-0 overflow-hidden`}
+    >
       <Canvas
+        frameloop={isInView ? "always" : "never"}
+        onCreated={handleCreated}
         camera={{ position: [3.6, 2.15, 4.0], fov: 38 }}
         gl={{
           antialias: true,

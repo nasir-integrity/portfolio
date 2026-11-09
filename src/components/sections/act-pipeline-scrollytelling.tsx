@@ -36,87 +36,85 @@ export function ActPipelineScrollytelling() {
     >
       <div className="mx-auto max-w-[1440px] border-x border-obsidian lg:sticky lg:top-14 lg:h-[calc(100vh-3.5rem)] flex flex-col justify-between bg-paper overflow-hidden">
         {/* Compact Top Bar */}
-        <div className="border-b border-obsidian px-6 sm:px-12 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h2 className="font-sans text-2xl sm:text-4xl font-bold uppercase tracking-tight text-obsidian">
-            6-STAGE TELEMETRY PIPELINE.
-          </h2>
-          <div className="font-mono text-xs uppercase tracking-[0.16em] text-steel flex items-center gap-3">
-            <span className="h-2 w-2 bg-vermillion" />
-            <span>SCROLL OR CLICK TO STEP THROUGH</span>
+        <div className="border-b border-obsidian px-6 sm:px-12 py-5 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="font-mono text-xs uppercase tracking-[0.18em] text-vermillion font-bold mb-1">
+              OPERATIONAL LIFECYCLE // 6 PHASES
+            </div>
+            <h2 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tight text-obsidian">
+              THE TELEMETRY PIPELINE.
+            </h2>
+          </div>
+          <div className="font-mono text-xs uppercase tracking-[0.16em] text-steel flex items-center gap-2.5">
+            <span className="h-2 w-2 bg-vermillion animate-pulse" />
+            <span>SCROLL OR TAP PHASES TO ADVANCE</span>
           </div>
         </div>
 
         {/* Main 2-Column Sticky Stage */}
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 min-h-0">
-          {/* Left 5 Columns: Vertical Kinetic Step Rail + Concise Active Caption */}
-          <div className="lg:col-span-5 p-6 sm:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-obsidian flex flex-col justify-between relative">
-            {/* Vertical Progress Rail */}
-            <div className="relative pl-6 space-y-2.5">
-              <div className="absolute left-0 top-1 bottom-1 w-[2px] bg-hairline-light overflow-hidden">
-                <m.div
-                  style={{
-                    scaleY: progressRailScaleY,
-                    transformOrigin: "50% 0%",
-                  }}
-                  className="h-full w-full bg-vermillion"
-                />
+          {/* Left 5 Columns: Narrative Scrollytelling Anchor */}
+          <div className="lg:col-span-5 p-6 sm:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-obsidian flex flex-col justify-between relative bg-paper">
+            {/* Step Navigation Pill Strip */}
+            <div>
+              <div className="grid grid-cols-6 gap-1 mb-8">
+                {PIPELINE_STAGES.map((stage, idx) => {
+                  const isActive = idx === activeStageIndex;
+                  return (
+                    <button
+                      key={stage.id}
+                      type="button"
+                      onClick={() => setActiveStageIndex(idx)}
+                      className={`h-9 flex flex-col items-center justify-center font-mono text-xs font-bold transition-all cursor-pointer ${
+                        isActive
+                          ? "bg-obsidian text-vermillion border-b-2 border-vermillion"
+                          : "bg-paper-muted text-steel hover:text-obsidian hover:bg-paper-muted/80"
+                      }`}
+                    >
+                      <span>{stage.stepNumber}</span>
+                    </button>
+                  );
+                })}
               </div>
 
-              {PIPELINE_STAGES.map((stage, idx) => {
-                const isActive = idx === activeStageIndex;
-                return (
-                  <button
-                    key={stage.id}
-                    type="button"
-                    onClick={() => setActiveStageIndex(idx)}
-                    className={`w-full text-left py-2 px-3 transition-colors cursor-pointer flex items-center justify-between ${
-                      isActive
-                        ? "bg-obsidian text-paper chamfer-sm"
-                        : "text-steel hover:text-obsidian hover:bg-paper-muted/60"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 truncate">
-                      <span
-                        className={`font-mono text-xs font-bold ${
-                          isActive ? "text-vermillion" : "text-steel"
-                        }`}
-                      >
-                        {stage.stepNumber}
-                      </span>
-                      <span className="font-sans text-sm sm:text-base font-bold uppercase tracking-tight truncate">
-                        {stage.title}
-                      </span>
-                    </div>
-                    {isActive && (
-                      <span className="h-1.5 w-1.5 bg-vermillion shrink-0 ml-2" />
-                    )}
-                  </button>
-                );
-              })}
+              {/* Active Stage Editorial Hook */}
+              <m.div
+                key={activeStage.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="space-y-4"
+              >
+                <div className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-vermillion">
+                  {activeStage.code}
+                </div>
+
+                <h3 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tight text-obsidian leading-[1.05]">
+                  {activeStage.title}
+                </h3>
+
+                <p className="font-sans text-sm sm:text-base text-steel leading-relaxed">
+                  {activeStage.subtitle}
+                </p>
+
+                <div className="bg-obsidian text-paper p-4 text-xs sm:text-sm font-sans leading-relaxed border-l-2 border-vermillion mt-6">
+                  {activeStage.summary}
+                </div>
+              </m.div>
             </div>
 
-            {/* Active Stage 1-Sentence Hook (Animated on Step Change) */}
-            <m.div
-              key={activeStage.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mt-8 pt-6 border-t border-hairline-light"
-            >
-              <div className="font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-vermillion mb-2">
-                {activeStage.code}
-              </div>
-              <p className="font-sans text-sm sm:text-base text-obsidian leading-relaxed">
-                {activeStage.summary}
-              </p>
-            </m.div>
+            {/* Bottom Scrollytelling Progress Footnote */}
+            <div className="pt-6 mt-8 border-t border-hairline-light flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.14em] text-steel">
+              <span>PHASE {activeStage.stepNumber} OF 06</span>
+              <span className="text-vermillion">DETERMINISTIC PIPELINE</span>
+            </div>
           </div>
 
-          {/* Right 7 Columns: Large Interactive Visual Plate */}
-          <div className="lg:col-span-7 p-6 sm:p-10 lg:p-14 bg-paper-muted/50 flex items-center justify-center">
+          {/* Right 7 Columns: Command Console Visual Plate */}
+          <div className="lg:col-span-7 p-6 sm:p-10 lg:p-14 bg-paper-muted/40 flex items-center justify-center">
             <m.div
               key={activeStage.id}
-              initial={{ opacity: 0, scale: 0.97, y: 14 }}
+              initial={{ opacity: 0, scale: 0.98, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="w-full max-w-2xl"

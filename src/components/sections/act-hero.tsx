@@ -89,17 +89,38 @@ export function ActHero() {
         {/* Right 7 Columns: Dominant Interactive 3D Vessel Stage */}
         <m.div
           style={{ scale: canvasScale }}
-          className="lg:col-span-7 relative min-h-[480px] lg:min-h-full bg-obsidian flex flex-col justify-between"
+          className="lg:col-span-7 relative min-h-[520px] lg:min-h-full bg-obsidian flex flex-col justify-between"
         >
-          {/* Minimal Floating Orbit Cue */}
-          <div className="absolute top-6 right-6 z-10 pointer-events-none">
-            <div className="border border-hairline-dark bg-obsidian/80 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-steel-light flex items-center gap-2">
+          {/* Top Interactive HUD Tags */}
+          <div className="absolute top-6 inset-x-6 z-10 flex items-center justify-between pointer-events-none">
+            <div className="hidden sm:flex items-center gap-2 border border-hairline-dark bg-obsidian/85 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-steel-light backdrop-blur-sm">
+              <span className="inline-block h-2 w-2 bg-vermillion animate-pulse" />
+              <span>DIGITAL TWIN // SEP-3P-104A</span>
+            </div>
+
+            <div className="border border-hairline-dark bg-obsidian/85 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-steel-light flex items-center gap-2 backdrop-blur-sm ml-auto">
               <span className="h-1.5 w-1.5 bg-vermillion" />
               <span>DRAG TO ORBIT 360°</span>
             </div>
           </div>
 
-          <div className="w-full h-[500px] lg:h-full flex-1">
+          {/* Interactive Floating Component Hotspots */}
+          <div className="absolute bottom-6 left-6 z-10 hidden sm:flex items-center gap-2 font-mono text-[10px] pointer-events-none">
+            <span className="border border-hairline-dark/80 bg-obsidian/80 px-2 py-1 text-steel-light">
+              F-101 INLET
+            </span>
+            <span className="border border-hairline-dark/80 bg-obsidian/80 px-2 py-1 text-steel-light">
+              ZONE A SHELL
+            </span>
+            <span className="border border-vermillion/60 bg-obsidian/80 px-2 py-1 text-vermillion">
+              EV-01 RELIEF
+            </span>
+            <span className="border border-hairline-dark/80 bg-obsidian/80 px-2 py-1 text-steel-light">
+              N-02 OUTLET
+            </span>
+          </div>
+
+          <div className="w-full h-[520px] lg:h-full flex-1">
             <FacilityHeroScene
               className="w-full h-full"
               scrollProgress={vesselRot}

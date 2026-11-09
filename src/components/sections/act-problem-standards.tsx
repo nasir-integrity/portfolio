@@ -23,19 +23,25 @@ export function ActProblemStandards() {
       className="relative w-full border-b border-obsidian bg-paper text-obsidian"
     >
       <div className="mx-auto max-w-[1440px] border-x border-obsidian">
-        {/* Concise Header */}
-        <div className="border-b border-obsidian px-6 sm:px-12 py-12 lg:py-16 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <h2 className="font-sans text-3xl sm:text-5xl font-bold uppercase tracking-tight leading-[1.02] text-obsidian max-w-2xl">
-            TRIAGE SCORES ARE NOT CARBON TONNAGE.
-          </h2>
+        {/* Concise Header with Open Breathing Room */}
+        <div className="border-b border-obsidian px-6 sm:px-12 lg:px-16 py-14 lg:py-20 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+          <div>
+            <div className="font-mono text-xs uppercase tracking-[0.18em] text-vermillion font-bold mb-3">
+              DETERMINISTIC SEPARATION // ZERO COERCION
+            </div>
+            <h2 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight leading-[1.0] text-obsidian max-w-3xl">
+              TRIAGE SCORES ARE NOT CARBON TONNAGE.
+            </h2>
+          </div>
           <p className="font-sans text-sm sm:text-base text-steel max-w-md leading-relaxed">
-            NASIR strictly separates{" "}
+            Industrial integrity fails when spreadsheets blend mechanical risk
+            with carbon claims. NASIR enforces a strict boundary between{" "}
             <strong className="text-obsidian font-semibold">
               API 580 maintenance triage
             </strong>{" "}
-            from{" "}
+            and{" "}
             <strong className="text-obsidian font-semibold">
-              OGMP 2.0 fugitive methane mass
+              OGMP 2.0 fugitive mass accounting
             </strong>
             .
           </p>
@@ -53,30 +59,46 @@ export function ActProblemStandards() {
             <m.div
               key={std.id}
               style={{ y: idx === 0 ? leftCardY : rightCardY }}
-              className="p-6 sm:p-12 lg:p-16 flex flex-col justify-between bg-paper"
+              className="p-8 sm:p-12 lg:p-16 flex flex-col justify-between bg-paper"
             >
               <div>
                 <div className="flex items-center justify-between font-mono text-xs uppercase tracking-[0.16em] text-vermillion font-bold mb-4">
                   <span>{std.code}</span>
-                  <span className="text-steel">{std.metrics[3].value}</span>
+                  <span className="text-steel">{std.frameworkFocus}</span>
                 </div>
 
-                <h3 className="font-sans text-2xl sm:text-3xl font-bold uppercase tracking-tight text-obsidian mb-3">
+                <h3 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tight text-obsidian mb-4">
                   {std.standardTitle}
                 </h3>
 
-                <p className="font-sans text-sm text-steel leading-relaxed mb-8 max-w-lg">
-                  {std.nasirDeterministicProtocol}
-                </p>
+                {/* Visual Showdown: Fatal Flaw vs NASIR Guarantee */}
+                <div className="mb-8 space-y-3 font-sans text-xs sm:text-sm">
+                  <div className="flex items-start gap-3 bg-obsidian/5 p-3.5 border-l-2 border-vermillion">
+                    <span className="font-mono text-xs font-bold text-vermillion shrink-0 mt-0.5">
+                      TRAP:
+                    </span>
+                    <span className="text-steel leading-relaxed">
+                      {std.legacyFailureMode}
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-3 bg-obsidian text-paper p-3.5">
+                    <span className="font-mono text-xs font-bold text-vermillion shrink-0 mt-0.5">
+                      RULE:
+                    </span>
+                    <span className="leading-relaxed">
+                      {std.nasirDeterministicProtocol}
+                    </span>
+                  </div>
+                </div>
 
                 {/* Visual Proportional Bar / Formula Plate */}
                 {idx === 0 ? (
                   <div className="mb-8 space-y-2.5 font-mono text-[11px]">
                     <div className="flex items-center justify-between text-obsidian font-bold">
                       <span>WEIGHTED COMPOSITE VECTOR</span>
-                      <span className="text-vermillion">0–100 INDEX</span>
+                      <span className="text-vermillion">0–100 RISK INDEX</span>
                     </div>
-                    <div className="h-9 w-full flex gap-1">
+                    <div className="h-10 w-full flex gap-1">
                       <div className="w-[35%] bg-obsidian text-paper flex items-center justify-between px-3">
                         <span>CORROSION</span>
                         <span className="text-vermillion font-bold">35%</span>
@@ -86,7 +108,7 @@ export function ActProblemStandards() {
                         <span>40%</span>
                       </div>
                       <div className="w-[25%] bg-paper-muted text-obsidian border border-obsidian flex items-center justify-between px-2.5">
-                        <span>PPM</span>
+                        <span>SNIFFER</span>
                         <span className="font-bold">25%</span>
                       </div>
                     </div>
@@ -97,13 +119,13 @@ export function ActProblemStandards() {
                       <span>NON-OVERLAPPING MASS INTEGRATION</span>
                       <span className="text-vermillion">KG CH4 / HOUR</span>
                     </div>
-                    <div className="h-9 w-full flex items-center gap-1">
+                    <div className="h-10 w-full flex items-center gap-1">
                       <div className="flex-1 h-full bg-obsidian text-paper flex items-center justify-between px-3">
                         <span>VALID INTERVAL [T0 → T1]</span>
                         <span className="text-vermillion font-bold">INTEGRATED</span>
                       </div>
-                      <div className="w-36 h-full border border-vermillion bg-vermillion/10 text-vermillion flex items-center justify-center px-2 font-bold">
-                        OVERLAP SKIPPED
+                      <div className="w-40 h-full border border-vermillion bg-vermillion/10 text-vermillion flex items-center justify-center px-2 font-bold text-[10px]">
+                        OVERLAP REJECTED
                       </div>
                     </div>
                   </div>

@@ -15,19 +15,21 @@ export function PipelineVisualPlate({
   return (
     <div
       data-active={isActive ? "true" : "false"}
-      className="isotherm-plate relative w-full border border-obsidian bg-obsidian text-paper p-5 sm:p-6 chamfer-tr"
+      className="isotherm-plate relative w-full border border-hairline-dark bg-obsidian text-paper p-6 sm:p-8 chamfer-tr shadow-2xl"
     >
       {/* Top Plate Frame Header */}
-      <div className="flex items-center justify-between border-b border-hairline-dark pb-3 mb-5 font-mono text-[10px] uppercase tracking-[0.16em]">
-        <div className="flex items-center gap-2">
-          <span className="inline-block h-2 w-2 bg-vermillion" />
-          <span className="text-paper font-semibold">{stage.code}</span>
+      <div className="flex items-center justify-between border-b border-hairline-dark pb-3 mb-6 font-mono text-xs uppercase tracking-[0.16em]">
+        <div className="flex items-center gap-2.5">
+          <span className="inline-block h-2 w-2 bg-vermillion animate-pulse" />
+          <span className="text-paper font-bold">{stage.code}</span>
         </div>
-        <span className="text-steel-light">STEP {stage.stepNumber} // 06</span>
+        <span className="text-vermillion font-bold">
+          PHASE {stage.stepNumber} // 06
+        </span>
       </div>
 
-      {/* Stage-Specific Architectural Schematic & UI Frame (Unbordered container) */}
-      <div className="mb-6 bg-obsidian-elevated/70 p-5 sm:p-6">
+      {/* Stage-Specific Architectural Schematic & UI Frame */}
+      <div className="mb-6 bg-obsidian-elevated/90 p-5 sm:p-7 border border-hairline-dark/60">
         {stage.stepNumber === "01" && <Stage01Schematic />}
         {stage.stepNumber === "02" && <Stage02Schematic />}
         {stage.stepNumber === "03" && <Stage03Schematic />}
@@ -36,8 +38,8 @@ export function PipelineVisualPlate({
         {stage.stepNumber === "06" && <Stage06Schematic />}
       </div>
 
-      {/* Bottom 4-Metric Telemetry Readout Strip (Open Key/Value) */}
-      <div className="pt-4 border-t border-hairline-dark/60 grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {/* Bottom 4-Metric Telemetry Readout Strip */}
+      <div className="pt-4 border-t border-hairline-dark grid grid-cols-2 sm:grid-cols-4 gap-4">
         {stage.telemetryReadout.map((item) => {
           const isAlert =
             item.status === "CRITICAL" || item.status === "WARNING";
@@ -47,7 +49,7 @@ export function PipelineVisualPlate({
                 {item.key}
               </div>
               <div
-                className={`text-xs sm:text-sm font-bold mt-0.5 truncate ${
+                className={`text-xs sm:text-sm font-bold mt-1 truncate ${
                   isAlert ? "text-vermillion" : "text-paper"
                 }`}
               >

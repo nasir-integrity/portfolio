@@ -18,13 +18,18 @@ export function ActArchitectureScope() {
     >
       <div className="mx-auto max-w-[1440px] border-x border-obsidian">
         {/* Concise Header */}
-        <div className="border-b border-obsidian px-6 sm:px-12 py-12 lg:py-16 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <h2 className="font-sans text-3xl sm:text-5xl font-bold uppercase tracking-tight leading-[1.02] text-obsidian max-w-2xl">
-            SYSTEM STACK &amp; CLAIM BOUNDARIES.
-          </h2>
+        <div className="border-b border-obsidian px-6 sm:px-12 lg:px-16 py-14 lg:py-20 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+          <div>
+            <div className="font-mono text-xs uppercase tracking-[0.18em] text-vermillion font-bold mb-3">
+              SYSTEM FOUNDATION // ZERO UNVERIFIED CLAIMS
+            </div>
+            <h2 className="font-sans text-3xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight leading-[1.0] text-obsidian max-w-3xl">
+              SYSTEM ARCHITECTURE &amp; GUARANTEES.
+            </h2>
+          </div>
           <p className="font-sans text-sm sm:text-base text-steel max-w-md leading-relaxed">
             Four deterministic layers coupling multi-tenant isolation with
-            explicit scientific boundaries.
+            explicit scientific boundaries—verified in unit and feature test suites.
           </p>
         </div>
 

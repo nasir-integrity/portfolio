@@ -88,8 +88,11 @@ export function ActRiskSimulator() {
     >
       <div className="mx-auto max-w-[1440px] border-x border-hairline-dark">
         {/* Compact Header */}
-        <div className="border-b border-hairline-dark px-6 sm:px-12 py-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div className="border-b border-hairline-dark px-6 sm:px-12 py-10 lg:py-14 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div>
+            <div className="font-mono text-xs uppercase tracking-[0.18em] text-vermillion font-bold mb-2">
+              REAL-TIME DETERMINISTIC WORKBENCH // ZERO-COERCION TEST
+            </div>
             <h2 className="font-sans text-3xl sm:text-5xl font-bold uppercase tracking-tight leading-[1.02] text-paper">
               INTERACTIVE 3D RISK &amp; CH4 SIMULATOR.
             </h2>
@@ -107,9 +110,30 @@ export function ActRiskSimulator() {
 
         {/* 12-Column Interactive Workbench */}
         <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-hairline-dark">
-          {/* Left 6 Columns: 3D Segment Inspector + Compact Telemetry Strip */}
-          <div className="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between space-y-5">
+          {/* Left 6 Columns: 3D Segment Inspector + Segment Switcher */}
+          <div className="lg:col-span-6 p-6 sm:p-10 lg:p-12 flex flex-col justify-between space-y-6">
             <div>
+              {/* Segment Quick-Selector Pills */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-4">
+                {VESSEL_SEGMENTS.map((seg) => {
+                  const isSegActive = seg.id === selectedSegment.id;
+                  return (
+                    <button
+                      key={seg.id}
+                      type="button"
+                      onClick={() => handleSelectSegment(seg)}
+                      className={`px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors truncate cursor-pointer ${
+                        isSegActive
+                          ? "bg-vermillion text-paper font-bold"
+                          : "bg-obsidian-elevated text-steel-light hover:text-paper hover:bg-obsidian-surface border border-hairline-dark"
+                      }`}
+                    >
+                      {seg.code}
+                    </button>
+                  );
+                })}
+              </div>
+
               <div className="flex items-center justify-between mb-3 font-mono text-xs uppercase tracking-[0.15em]">
                 <span className="text-vermillion font-bold">
                   {selectedSegment.code} // {selectedSegment.name}
@@ -125,7 +149,7 @@ export function ActRiskSimulator() {
               />
             </div>
 
-            {/* Compact 3-Stat Telemetry Bar (Replaces Prose Dossier Card) */}
+            {/* Compact 3-Stat Telemetry Bar */}
             <div className="grid grid-cols-3 gap-4 border-t border-hairline-dark pt-4 font-mono text-xs">
               <div>
                 <div className="text-[10px] text-steel-light uppercase">

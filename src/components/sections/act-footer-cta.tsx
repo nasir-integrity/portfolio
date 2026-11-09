@@ -3,10 +3,24 @@
 import React from "react";
 import * as m from "motion/react-m";
 import { ArrowUpRight, Code2, GitFork, ShieldAlert, Users } from "lucide-react";
+import { useLenis } from "lenis/react";
 import { Button } from "@/components/ui/button";
 import { NASIR_TEAM_MEMBERS } from "@/data/nasir-content";
 
 export function ActFooterCta() {
+  const lenis = useLenis();
+
+  const handleBackToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    if (lenis) {
+      lenis.scrollTo(0, {
+        duration: 1.3,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
   return (
     <footer
       id="act-cta"
@@ -133,7 +147,11 @@ export function ActFooterCta() {
           </div>
 
           <div className="flex flex-wrap items-center gap-6">
-            <a href="#act-hero" className="hover:text-vermillion">
+            <a
+              href="#act-hero"
+              onClick={handleBackToTop}
+              className="hover:text-vermillion cursor-pointer transition-colors"
+            >
               BACK TO TOP ↑
             </a>
             <span>NEXT.JS • MOTION • LENIS • R3F • TAILWIND V4</span>

@@ -23,7 +23,7 @@ export function ActPipelineScrollytelling() {
       count - 1,
       Math.max(0, Math.floor(latest * count))
     );
-    setActiveStageIndex(nextIdx);
+    setActiveStageIndex((prev) => (prev !== nextIdx ? nextIdx : prev));
   });
 
   const activeStage = PIPELINE_STAGES[activeStageIndex];

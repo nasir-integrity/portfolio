@@ -24,7 +24,7 @@ export function AppProviders({ children }: AppProvidersProps) {
             lerp: 0.09,
             duration: 1.15,
             smoothWheel: true,
-            anchors: true,
+            anchors: false,
             respectReducedMotion: true,
           }}
         >

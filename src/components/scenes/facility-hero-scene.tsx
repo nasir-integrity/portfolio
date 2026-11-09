@@ -48,7 +48,7 @@ function IndustrialSeparatorTwin({
       const s = 1 + Math.cos(t * 3.1) * 0.2;
       sensorRef2.current.scale.set(s, s, s);
     }
-    if (groupRef.current) {
+    if (groupRef.current && scrollProgress !== 0) {
       groupRef.current.rotation.y = scrollProgress * 0.65;
     }
   });
@@ -383,7 +383,7 @@ export default function FacilityHeroScene({
   scrollProgress = 0,
 }: FacilityHeroSceneProps) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} min-h-0 overflow-hidden`}>
       <Canvas
         camera={{ position: [3.6, 2.15, 4.0], fov: 38 }}
         gl={{

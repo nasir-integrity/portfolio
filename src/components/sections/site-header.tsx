@@ -4,6 +4,7 @@ import React from "react";
 import { useScroll, useTransform } from "motion/react";
 import * as m from "motion/react-m";
 import { ArrowUpRight, ShieldAlert } from "lucide-react";
+import { useLenis } from "lenis/react";
 
 const NAV_ITEMS = [
   { label: "DIGITAL TWIN", href: "#act-hero" },
@@ -14,8 +15,23 @@ const NAV_ITEMS = [
 ];
 
 export function SiteHeader() {
+  const lenis = useLenis();
   const { scrollYProgress } = useScroll();
   const progressScaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  const handleNavClick = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (lenis) {
+      lenis.scrollTo(href, {
+        duration: 1.1,
+        offset: -56,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      const el = document.querySelector(href);
+      el?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-hairline-dark bg-obsidian/95 backdrop-blur-md text-paper">
@@ -23,7 +39,8 @@ export function SiteHeader() {
         {/* Left Brand Identifier */}
         <a
           href="#act-hero"
-          className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] font-semibold group"
+          onClick={handleNavClick("#act-hero")}
+          className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] font-semibold group cursor-pointer"
         >
           <span className="inline-flex h-6 w-6 items-center justify-center bg-vermillion text-paper font-bold chamfer-sm">
             <ShieldAlert className="h-3.5 w-3.5" />
@@ -40,7 +57,8 @@ export function SiteHeader() {
             <a
               key={item.href}
               href={item.href}
-              className="py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-steel-light hover:text-paper transition-colors"
+              onClick={handleNavClick(item.href)}
+              className="py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-steel-light hover:text-paper transition-colors cursor-pointer"
             >
               <span>{item.label}</span>
             </a>

@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import dynamic from "next/dynamic";
-import { useMotionValueEvent, useScroll, useTransform } from "motion/react";
+import { useScroll, useTransform } from "motion/react";
 import * as m from "motion/react-m";
 import { ArrowDownRight, Terminal } from "lucide-react";
+import { useLenis } from "lenis/react";
 import { Button } from "@/components/ui/button";
 import { DecodeText } from "@/components/ui/decode-text";
 
@@ -23,7 +24,7 @@ const FacilityHeroScene = dynamic(
 
 export function ActHero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [vesselRot, setVesselRot] = useState(0);
+  const lenis = useLenis();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -32,19 +33,27 @@ export function ActHero() {
 
   const textY = useTransform(scrollYProgress, [0, 1], [0, -90]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.72], [1, 0]);
-  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setVesselRot(latest);
-  });
+  const handleScrollTo = (targetId: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (lenis) {
+      lenis.scrollTo(targetId, {
+        duration: 1.2,
+        offset: -56,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      document.querySelector(targetId)?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section
       id="act-hero"
       ref={sectionRef}
-      className="relative min-h-screen w-full border-b border-obsidian bg-obsidian text-paper pt-14 overflow-hidden"
+      className="relative w-full border-b border-obsidian bg-obsidian text-paper pt-14 overflow-hidden"
     >
-      <div className="mx-auto max-w-[1440px] border-x border-hairline-dark grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-3.5rem)]">
+      <div className="mx-auto max-w-[1440px] border-x border-hairline-dark grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-3.5rem)] lg:h-[calc(100vh-3.5rem)] min-h-0">
         {/* Left 5 Columns: Minimalist Kinetic Hook */}
         <m.div
           style={{ y: textY, opacity: textOpacity }}
@@ -65,13 +74,23 @@ export function ActHero() {
             </p>
 
             <div className="flex flex-wrap items-center gap-3.5">
-              <Button variant="vermillion" size="lg" asChild>
+              <Button
+                variant="vermillion"
+                size="lg"
+                onClick={handleScrollTo("#act-pipeline")}
+                asChild
+              >
                 <a href="#act-pipeline">
                   <span>SCROLL PIPELINE</span>
                   <ArrowDownRight className="h-4 w-4" />
                 </a>
               </Button>
-              <Button variant="outlineDark" size="lg" asChild>
+              <Button
+                variant="outlineDark"
+                size="lg"
+                onClick={handleScrollTo("#act-simulator")}
+                asChild
+              >
                 <a href="#act-simulator">
                   <Terminal className="h-4 w-4 text-vermillion" />
                   <span>LIVE SIMULATOR</span>
@@ -87,10 +106,7 @@ export function ActHero() {
         </m.div>
 
         {/* Right 7 Columns: Dominant Interactive 3D Vessel Stage */}
-        <m.div
-          style={{ scale: canvasScale }}
-          className="lg:col-span-7 relative min-h-[520px] lg:min-h-full bg-obsidian flex flex-col justify-between"
-        >
+        <div className="lg:col-span-7 relative h-[500px] lg:h-full min-h-0 bg-obsidian flex flex-col justify-between overflow-hidden">
           {/* Top Interactive HUD Tags */}
           <div className="absolute top-6 inset-x-6 z-10 flex items-center justify-between pointer-events-none">
             <div className="hidden sm:flex items-center gap-2 border border-hairline-dark bg-obsidian/85 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-steel-light backdrop-blur-sm">
@@ -120,13 +136,10 @@ export function ActHero() {
             </span>
           </div>
 
-          <div className="w-full h-[520px] lg:h-full flex-1">
-            <FacilityHeroScene
-              className="w-full h-full"
-              scrollProgress={vesselRot}
-            />
+          <div className="relative w-full h-[500px] lg:h-full flex-1 min-h-0 overflow-hidden">
+            <FacilityHeroScene className="w-full h-full" />
           </div>
-        </m.div>
+        </div>
       </div>
     </section>
   );

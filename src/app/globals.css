@@ -82,3 +82,46 @@
 .isotherm-plate[data-active="true"] {
   filter: saturate(1) contrast(1);
 }
+
+/* Global 4-Tier Typographic System */
+.type-section-header {
+  font-family: var(--font-sans);
+  font-size: clamp(2.5rem, 6vw, 5.25rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.type-title {
+  font-family: var(--font-sans);
+  font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+.type-body {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.7;
+  max-width: 62ch;
+}
+
+.type-action {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* Global Spacing Utility (+30% vertical breathing room) */
+.section-pad {
+  padding-top: clamp(6rem, 10vw, 11rem);
+  padding-bottom: clamp(6rem, 10vw, 11rem);
+  padding-left: clamp(1.5rem, 5vw, 5rem);
+  padding-right: clamp(1.5rem, 5vw, 5rem);
+}

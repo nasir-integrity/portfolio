@@ -60,6 +60,50 @@ export interface ArchitectureLayer {
   keyModules: string[];
 }
 
+export interface TeamMemberSpec {
+  id: string;
+  code: string;
+  name: string;
+  program: string;
+  institution: string;
+  focusArea: string;
+  portfolioUrl: string;
+  portfolioLabel: string;
+}
+
+export const NASIR_TEAM_MEMBERS: TeamMemberSpec[] = [
+  {
+    id: "team-rafi",
+    code: "ENG // 01",
+    name: "Rafi Fakhri Alaudin",
+    program: "Software Engineering Technology",
+    institution: "Vocational School of IPB University",
+    focusArea: "Platform Architecture & Domain Services",
+    portfolioUrl: "https://github.com/ZimrionVarethos/pertamuda",
+    portfolioLabel: "VIEW PORTFOLIO",
+  },
+  {
+    id: "team-farrel",
+    code: "ENG // 02",
+    name: "Moch. Farrel Azqila Simbolon",
+    program: "Software Engineering Technology",
+    institution: "Vocational School of IPB University",
+    focusArea: "Spatial 3D Inspection & Telemetry Systems",
+    portfolioUrl: "https://github.com/ZimrionVarethos",
+    portfolioLabel: "VIEW PORTFOLIO",
+  },
+  {
+    id: "team-daffa",
+    code: "ENG // 03",
+    name: "Daffa Bisma Rudidharma",
+    program: "Software Engineering Technology",
+    institution: "Vocational School of IPB University",
+    focusArea: "Full-Stack Engineering & Systems Infrastructure",
+    portfolioUrl: "https://daffabisma.com",
+    portfolioLabel: "DAFFABISMA.COM",
+  },
+];
+
 export const HERO_METRICS: NasirMetric[] = [
   {
     code: "STD // 01",

@@ -15,7 +15,7 @@ export function PipelineVisualPlate({
   return (
     <div
       data-active={isActive ? "true" : "false"}
-      className="isotherm-plate relative w-full border border-obsidian bg-obsidian text-paper p-5 sm:p-6 chamfer-tr cursor-pointer"
+      className="isotherm-plate relative w-full border border-obsidian bg-obsidian text-paper p-5 sm:p-6 chamfer-tr"
     >
       {/* Top Plate Frame Header */}
       <div className="flex items-center justify-between border-b border-hairline-dark pb-3 mb-5 font-mono text-[10px] uppercase tracking-[0.16em]">
@@ -23,11 +23,11 @@ export function PipelineVisualPlate({
           <span className="inline-block h-2 w-2 bg-vermillion" />
           <span className="text-paper font-semibold">{stage.code}</span>
         </div>
-        <span className="text-vermillion">{stage.sourceModulePath}</span>
+        <span className="text-steel-light">STEP {stage.stepNumber} // 06</span>
       </div>
 
-      {/* Stage-Specific Architectural Schematic & UI Frame */}
-      <div className="mb-5 border border-hairline-dark bg-obsidian-elevated p-4 sm:p-5">
+      {/* Stage-Specific Architectural Schematic & UI Frame (Unbordered container) */}
+      <div className="mb-6 bg-obsidian-elevated/70 p-5 sm:p-6">
         {stage.stepNumber === "01" && <Stage01Schematic />}
         {stage.stepNumber === "02" && <Stage02Schematic />}
         {stage.stepNumber === "03" && <Stage03Schematic />}
@@ -36,21 +36,18 @@ export function PipelineVisualPlate({
         {stage.stepNumber === "06" && <Stage06Schematic />}
       </div>
 
-      {/* Bottom 4-Metric Telemetry Readout Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      {/* Bottom 4-Metric Telemetry Readout Strip (Open Key/Value) */}
+      <div className="pt-4 border-t border-hairline-dark/60 grid grid-cols-2 sm:grid-cols-4 gap-4">
         {stage.telemetryReadout.map((item) => {
           const isAlert =
             item.status === "CRITICAL" || item.status === "WARNING";
           return (
-            <div
-              key={item.key}
-              className="border border-hairline-dark bg-obsidian-surface p-2.5 font-mono"
-            >
-              <div className="text-[9px] uppercase tracking-[0.14em] text-steel-light truncate">
+            <div key={item.key} className="font-mono">
+              <div className="text-[10px] uppercase tracking-[0.14em] text-steel-light truncate">
                 {item.key}
               </div>
               <div
-                className={`text-xs font-bold mt-1 truncate ${
+                className={`text-xs sm:text-sm font-bold mt-0.5 truncate ${
                   isAlert ? "text-vermillion" : "text-paper"
                 }`}
               >
@@ -73,7 +70,7 @@ function Stage01Schematic() {
       </div>
       <svg
         viewBox="0 0 520 170"
-        className="w-full h-auto border border-hairline-dark bg-obsidian p-2"
+        className="w-full h-auto bg-transparent"
         role="img"
         aria-label="3-Phase Horizontal Separator Schematic"
       >
@@ -120,7 +117,7 @@ function Stage02Schematic() {
         <span>CSV STREAM // PARSER VALIDATION MATRIX</span>
         <span className="text-vermillion">STRICT SCHEMA GATE</span>
       </div>
-      <div className="divide-y divide-hairline-dark border border-hairline-dark">
+      <div className="divide-y divide-hairline-dark/60">
         {rows.map((r) => (
           <div
             key={r.id}
@@ -154,7 +151,7 @@ function Stage03Schematic() {
   return (
     <div className="space-y-3 font-mono">
       {bars.map((b) => (
-        <div key={b.label} className="bg-obsidian p-2.5 border border-hairline-dark">
+        <div key={b.label} className="py-2">
           <div className="flex items-center justify-between text-[10px] mb-1.5">
             <span className="text-paper font-semibold">{b.label}</span>
             <span className="text-vermillion font-bold">{b.score.toFixed(1)} / 100</span>
@@ -181,7 +178,7 @@ function Stage04Schematic() {
         <span>OGMP 2.0 INTERVAL CLIPPING &amp; OVERLAP GUARD</span>
         <span className="text-vermillion">RATE * HOURS = KG CH4</span>
       </div>
-      <div className="space-y-2 border border-hairline-dark bg-obsidian p-3">
+      <div className="space-y-2 bg-obsidian p-3">
         <div className="flex items-center gap-2">
           <span className="w-20 text-steel-light">INT #101</span>
           <div className="flex-1 h-5 bg-vermillion/90 text-paper px-2 flex items-center justify-between">
@@ -210,21 +207,21 @@ function Stage04Schematic() {
 
 function Stage05Schematic() {
   return (
-    <div className="border border-hairline-dark bg-obsidian p-3.5 font-mono text-xs space-y-3">
+    <div className="bg-obsidian p-3.5 font-mono text-xs space-y-3">
       <div className="flex items-center justify-between border-b border-hairline-dark pb-2">
         <span className="text-vermillion font-bold">TICKET // WO-2026-089</span>
         <span className="bg-vermillion text-paper px-2 py-0.5 text-[10px] font-bold">
           PRIORITY: CRITICAL
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-2 text-[10px]">
-        <div className="border border-hairline-dark p-2">
+      <div className="grid grid-cols-2 gap-3 text-[10px]">
+        <div className="bg-obsidian-surface p-2.5">
           <div className="text-steel-light">ASSET SEGMENT</div>
           <div className="text-paper font-semibold mt-0.5">
             EV-01 Emergency Relief Valve
           </div>
         </div>
-        <div className="border border-hairline-dark p-2">
+        <div className="bg-obsidian-surface p-2.5">
           <div className="text-steel-light">TRIGGER CONDITION</div>
           <div className="text-vermillion font-semibold mt-0.5">
             45% Wall Loss + Seat Simmer
@@ -241,7 +238,7 @@ function Stage05Schematic() {
 
 function Stage06Schematic() {
   return (
-    <div className="border border-hairline-dark bg-obsidian p-3.5 font-mono text-[10px] space-y-2.5">
+    <div className="bg-obsidian p-3.5 font-mono text-[10px] space-y-2.5">
       <div className="flex items-center justify-between border-b border-hairline-dark pb-2">
         <span className="text-paper font-bold">
           REGULATORY DOSSIER // RPT-2026-Q4-V4
@@ -251,20 +248,20 @@ function Stage06Schematic() {
         </span>
       </div>
       <div className="grid grid-cols-3 gap-2">
-        <div className="bg-obsidian-surface p-2 border border-hairline-dark">
+        <div className="bg-obsidian-surface p-2">
           <div className="text-steel-light">METHOD ID</div>
           <div className="text-paper font-bold mt-0.5">OGMP-2.0-V1</div>
         </div>
-        <div className="bg-obsidian-surface p-2 border border-hairline-dark">
+        <div className="bg-obsidian-surface p-2">
           <div className="text-steel-light">COVERAGE RATIO</div>
           <div className="text-vermillion font-bold mt-0.5">0.94 (PARTIAL)</div>
         </div>
-        <div className="bg-obsidian-surface p-2 border border-hairline-dark">
+        <div className="bg-obsidian-surface p-2">
           <div className="text-steel-light">UNCERTAINTY</div>
           <div className="text-paper font-bold mt-0.5">+/- 15.0%</div>
         </div>
       </div>
-      <div className="bg-obsidian-elevated border border-hairline-dark px-2.5 py-1.5 text-steel-light">
+      <div className="bg-obsidian-elevated px-2.5 py-1.5 text-steel-light">
         EXCLUSION LOG: 1 overlapping observation (#884) excluded; 0 stale assets coerced.
       </div>
     </div>

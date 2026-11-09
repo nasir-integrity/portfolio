@@ -3,7 +3,6 @@
 import React from "react";
 import * as m from "motion/react-m";
 import { AlertTriangle, CheckCircle2, Scale } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { ChamferCard } from "@/components/ui/chamfer-card";
 import { STANDARDS_COMPARISONS } from "@/data/nasir-content";
 
@@ -11,31 +10,25 @@ export function ActProblemStandards() {
   return (
     <section
       id="act-standards"
-      className="relative w-full border-b border-obsidian bg-paper text-obsidian bg-blueprint-light"
+      className="relative w-full border-b border-obsidian bg-paper text-obsidian"
     >
       <div className="mx-auto max-w-[1440px] border-x border-obsidian">
         {/* Section Header Strip */}
         <div className="border-b border-obsidian px-6 sm:px-10 py-10 lg:py-14 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className="lg:col-span-7">
-            <div className="mb-3 flex items-center gap-2">
-              <Badge variant="vermillion">ACT II // PROBLEM &amp; STANDARDS</Badge>
-              <Badge variant="light">SCIENTIFIC RIGOR</Badge>
-            </div>
-            <h2 className="font-mono text-2xl sm:text-4xl font-bold uppercase tracking-tight leading-[1.1]">
+            <h2 className="font-sans text-3xl sm:text-5xl font-bold uppercase tracking-tight leading-[1.05] text-obsidian">
               WHY LEGACY SPREADSHEETS FAIL AGING OIL &amp; GAS INFRASTRUCTURE.
             </h2>
           </div>
           <div className="lg:col-span-5">
             <p className="font-sans text-sm sm:text-base text-steel leading-relaxed">
-              Aging pipelines, pressure vessels, and storage tanks suffer from
-              fragmented manual inspection logs. NASIR enforces a strict
-              architectural separation between{" "}
+              Fragmented spreadsheets fail under audit. NASIR strictly decouples{" "}
               <strong className="text-obsidian font-semibold">
                 operational risk triage (0–100)
               </strong>{" "}
-              and{" "}
+              from{" "}
               <strong className="text-obsidian font-semibold">
-                regulatory carbon mass accounting (kg CH4)
+                audit-grade fugitive methane accounting (kg CH4)
               </strong>
               .
             </p>
@@ -54,19 +47,19 @@ export function ActProblemStandards() {
               className="p-6 sm:p-10 lg:p-12 flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between border-b border-obsidian pb-3 mb-6 font-mono text-xs uppercase tracking-[0.16em]">
+                <div className="flex items-center justify-between border-b border-hairline-light pb-3 mb-6 font-mono text-xs uppercase tracking-[0.16em]">
                   <span className="font-semibold text-vermillion">
                     {std.code}
                   </span>
                   <span className="text-steel">{std.frameworkFocus}</span>
                 </div>
 
-                <h3 className="font-mono text-xl sm:text-2xl font-bold uppercase tracking-tight mb-6">
+                <h3 className="font-sans text-xl sm:text-2xl font-bold uppercase tracking-tight text-obsidian mb-4">
                   {std.standardTitle}
                 </h3>
 
-                {/* Legacy Failure Box */}
-                <div className="mb-5 border border-obsidian bg-paper-muted p-4">
+                {/* Legacy Failure Box - unbordered */}
+                <div className="mb-6 bg-paper-muted/60 p-5">
                   <div className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-steel mb-2">
                     <AlertTriangle className="h-3.5 w-3.5 text-vermillion" />
                     <span>LEGACY FAILURE MODE</span>
@@ -90,21 +83,21 @@ export function ActProblemStandards() {
                   <p className="font-sans text-xs sm:text-sm text-obsidian leading-relaxed mb-4">
                     {std.nasirDeterministicProtocol}
                   </p>
-                  <div className="border border-obsidian bg-obsidian text-paper px-3.5 py-2.5 font-mono text-xs overflow-x-auto">
+                  <div className="bg-obsidian text-paper px-4 py-3 font-mono text-xs overflow-x-auto">
                     <span className="text-vermillion mr-2">$</span>
                     {std.formulaOrConstraint}
                   </div>
                 </ChamferCard>
               </div>
 
-              {/* 4-Cell Spec Sub-Grid */}
-              <div className="grid grid-cols-2 gap-px bg-obsidian border border-obsidian">
+              {/* Open 2-Column Metric Strip (Unbordered grid) */}
+              <div className="grid grid-cols-2 gap-6 pt-6 border-t border-hairline-light">
                 {std.metrics.map((mItem) => (
-                  <div key={mItem.label} className="bg-paper p-3.5">
+                  <div key={mItem.label}>
                     <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-steel mb-1">
                       {mItem.label}
                     </div>
-                    <div className="font-mono text-xs sm:text-sm font-bold text-obsidian">
+                    <div className="font-mono text-sm sm:text-base font-bold text-obsidian">
                       {mItem.value}
                     </div>
                   </div>
@@ -122,14 +115,13 @@ export function ActProblemStandards() {
             </span>
             <div>
               <div className="font-mono text-xs font-bold uppercase tracking-[0.15em] text-vermillion">
-                METHODOLOGY INTEGRITY RULE // ZERO-SUBSTITUTION PROHIBITED
+                INTEGRITY PRINCIPLE // ZERO-SUBSTITUTION ENFORCED
               </div>
               <p className="font-sans text-xs sm:text-sm text-steel-light mt-0.5">
-                Risk triage scores (0–100) prioritize physical maintenance and
-                can never be claimed as carbon credits. Ambient methane ppm
-                readings never generate mass tonnage without a validated{" "}
-                <code className="font-mono text-paper">kg/h</code> flow rate and
-                measured interval.
+                Risk scores prioritize maintenance and cannot generate carbon
+                credits. Ambient ppm sniffer readings never yield tonnage
+                without validated{" "}
+                <code className="font-mono text-paper">kg/h</code> flow rates.
               </p>
             </div>
           </div>

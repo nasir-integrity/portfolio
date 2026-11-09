@@ -4,11 +4,9 @@ import React, { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import * as m from "motion/react-m";
-import { ArrowDownRight, Box, GitBranch, Terminal } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { ArrowDownRight, Box, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DecodeText } from "@/components/ui/decode-text";
-import { HERO_METRICS } from "@/data/nasir-content";
 
 const FacilityHeroScene = dynamic(
   () => import("@/components/scenes/facility-hero-scene"),
@@ -44,38 +42,17 @@ export function ActHero() {
     <section
       id="act-hero"
       ref={sectionRef}
-      className="relative min-h-screen w-full border-b border-obsidian bg-obsidian text-paper pt-14 bg-blueprint-dark"
+      className="relative min-h-screen w-full border-b border-obsidian bg-obsidian text-paper pt-14"
     >
-      {/* Top Telemetry Sub-Header Strip */}
-      <div className="mx-auto max-w-[1440px] border-x border-b border-hairline-dark px-4 sm:px-8 py-2.5 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-steel-light">
-        <div className="flex items-center gap-3">
-          <span className="inline-block h-1.5 w-1.5 bg-vermillion" />
-          <span>ACT I // DIGITAL TWIN OVERVIEW</span>
-          <span className="hidden sm:inline text-hairline-dark">|</span>
-          <span className="hidden sm:inline">
-            NUSANTARA ASSET INTEGRITY &amp; RISK PLATFORM
-          </span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span>API 580 + OGMP 2.0</span>
-          <span className="text-vermillion">PERTAMUDA SEED &amp; SCALE MVP</span>
-        </div>
-      </div>
-
       {/* Main 2-Column Isotherm Hero Grid */}
-      <div className="mx-auto max-w-[1440px] border-x border-hairline-dark grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-190px)]">
+      <div className="mx-auto max-w-[1440px] border-x border-hairline-dark grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-3.5rem)]">
         {/* Left Column: Editorial Technical Typography */}
         <m.div
           style={{ y: textY, opacity: textOpacity }}
           className="lg:col-span-6 p-6 sm:p-10 lg:p-12 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-hairline-dark"
         >
           <div>
-            <div className="mb-6 flex flex-wrap items-center gap-2">
-              <Badge variant="vermillion">SYS // NASIR-V1.0</Badge>
-              <Badge variant="dark">OIL &amp; GAS ASSET INTEGRITY</Badge>
-            </div>
-
-            <h1 className="font-mono text-3xl sm:text-5xl xl:text-[54px] font-bold uppercase tracking-tight leading-[1.05] text-paper mb-6">
+            <h1 className="font-sans text-4xl sm:text-6xl xl:text-[64px] font-bold uppercase tracking-tight leading-[1.02] text-paper mb-6">
               <DecodeText text="TRACEABLE ASSET" as="span" />
               <br />
               <span className="text-vermillion">INTEGRITY &amp; CH4</span>
@@ -84,17 +61,16 @@ export function ActHero() {
             </h1>
 
             <p className="font-sans text-sm sm:text-base text-steel-light leading-relaxed max-w-xl mb-8">
-              An industrial intelligence platform engineered for aging oil, gas,
-              and petrochemical facilities. NASIR connects validated field
-              sensor observations with{" "}
+              Engineered for aging oil &amp; gas infrastructure. NASIR links field
+              inspection telemetry directly to{" "}
               <strong className="text-paper font-medium">
-                API 580 risk-based maintenance prioritization
+                API 580 maintenance triage
               </strong>{" "}
               and{" "}
               <strong className="text-paper font-medium">
-                OGMP 2.0 fugitive methane mass quantification
+                OGMP 2.0 methane mass quantification
               </strong>
-              —eliminating silent zero-substitution and unverified carbon claims.
+              —with zero silent substitution.
             </p>
 
             {/* Primary CTAs */}
@@ -111,36 +87,6 @@ export function ActHero() {
                   <span>LAUNCH RISK SIMULATOR</span>
                 </a>
               </Button>
-              <Button variant="outlineDark" size="lg" asChild>
-                <a
-                  href="https://github.com/ZimrionVarethos/pertamuda"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <GitBranch className="h-4 w-4" />
-                  <span>GITHUB SOURCE</span>
-                </a>
-              </Button>
-            </div>
-          </div>
-
-          {/* Bottom Spec Callout inside Left Column */}
-          <div className="mt-10 pt-6 border-t border-hairline-dark grid grid-cols-2 gap-4 font-mono text-xs">
-            <div>
-              <div className="text-[10px] text-steel-light uppercase tracking-[0.14em] mb-1">
-                CORE ENGINE STACK
-              </div>
-              <div className="text-paper font-semibold">
-                LARAVEL 13 • REACT 19 • THREE.JS
-              </div>
-            </div>
-            <div>
-              <div className="text-[10px] text-steel-light uppercase tracking-[0.14em] mb-1">
-                CLAIM BOUNDARY POLICY
-              </div>
-              <div className="text-vermillion font-semibold">
-                STRICT NULL-SAFETY (24H WINDOW)
-              </div>
             </div>
           </div>
         </m.div>
@@ -180,27 +126,6 @@ export function ActHero() {
             </div>
           </div>
         </m.div>
-      </div>
-
-      {/* Bottom 4-Metric Rigid Grid */}
-      <div className="mx-auto max-w-[1440px] border-x border-t border-hairline-dark grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-hairline-dark bg-obsidian-elevated">
-        {HERO_METRICS.map((item) => (
-          <div key={item.code} className="p-6 flex flex-col justify-between">
-            <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.16em] text-steel-light mb-3">
-              <span>{item.code}</span>
-              <span className="text-vermillion">{item.unit}</span>
-            </div>
-            <div className="font-mono text-2xl sm:text-3xl font-bold text-paper tracking-tight mb-1.5">
-              {item.value}
-            </div>
-            <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-paper mb-1">
-              {item.label}
-            </div>
-            <p className="font-sans text-xs text-steel-light leading-relaxed">
-              {item.note}
-            </p>
-          </div>
-        ))}
       </div>
     </section>
   );

@@ -6,11 +6,11 @@ import * as m from "motion/react-m";
 import { ArrowUpRight, ShieldAlert } from "lucide-react";
 
 const NAV_ITEMS = [
-  { index: "01", label: "DIGITAL TWIN", href: "#act-hero" },
-  { index: "02", label: "STANDARDS", href: "#act-standards" },
-  { index: "03", label: "PIPELINE", href: "#act-pipeline" },
-  { index: "04", label: "SIMULATOR", href: "#act-simulator" },
-  { index: "05", label: "ARCHITECTURE", href: "#act-architecture" },
+  { label: "DIGITAL TWIN", href: "#act-hero" },
+  { label: "STANDARDS", href: "#act-standards" },
+  { label: "PIPELINE", href: "#act-pipeline" },
+  { label: "SIMULATOR", href: "#act-simulator" },
+  { label: "ARCHITECTURE", href: "#act-architecture" },
 ];
 
 export function SiteHeader() {
@@ -29,23 +29,19 @@ export function SiteHeader() {
             <ShieldAlert className="h-3.5 w-3.5" />
           </span>
           <span>NASIR</span>
-          <span className="hidden md:inline-block text-steel-light border-l border-hairline-dark pl-3">
-            ASSET INTEGRITY &amp; CH4 RISK PLATFORM
-          </span>
         </a>
 
         {/* Center Section Jump Links */}
         <nav
-          aria-label="Primary Scrollytelling Sections"
-          className="hidden lg:flex items-center divide-x divide-hairline-dark border-x border-hairline-dark h-full"
+          aria-label="Primary Sections"
+          className="hidden lg:flex items-center gap-7 h-full"
         >
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="h-full px-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-steel-light hover:text-paper hover:bg-obsidian-surface"
+              className="py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-steel-light hover:text-paper transition-colors"
             >
-              <span className="text-vermillion">{item.index}</span>
               <span>{item.label}</span>
             </a>
           ))}

@@ -3,7 +3,6 @@
 import React from "react";
 import * as m from "motion/react-m";
 import { Check, Cpu, Factory, ShieldAlert, X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { ChamferCard } from "@/components/ui/chamfer-card";
 import {
   ARCHITECTURE_LAYERS,
@@ -14,26 +13,22 @@ export function ActArchitectureScope() {
   return (
     <section
       id="act-architecture"
-      className="relative w-full border-b border-obsidian bg-paper text-obsidian bg-blueprint-light"
+      className="relative w-full border-b border-obsidian bg-paper text-obsidian"
     >
       <div className="mx-auto max-w-[1440px] border-x border-obsidian">
         {/* Top Section Header */}
         <div className="border-b border-obsidian px-6 sm:px-10 py-10 lg:py-14 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className="lg:col-span-7">
-            <div className="mb-3 flex flex-wrap items-center gap-2">
-              <Badge variant="vermillion">ACT V // ARCHITECTURE &amp; SCOPE HONESTY</Badge>
-              <Badge variant="light">MULTI-TENANT STACK</Badge>
-            </div>
-            <h2 className="font-mono text-2xl sm:text-4xl font-bold uppercase tracking-tight leading-[1.08]">
+            <h2 className="font-sans text-3xl sm:text-5xl font-bold uppercase tracking-tight leading-[1.05] text-obsidian">
               ENGINEERED FOR DETERMINISTIC AUDITABILITY &amp; TRANSPARENT BOUNDARIES.
             </h2>
           </div>
           <div className="lg:col-span-5">
             <p className="font-sans text-sm sm:text-base text-steel leading-relaxed">
-              Built on Laravel 13, React 19, Inertia.js, and Three.js, NASIR
-              couples strict multi-tenant data isolation with explicit claim
-              boundaries—documenting both what the MVP verifies today and where
-              its integration scope stops.
+              Built on Laravel 13, React 19, Inertia.js, and Three.js. NASIR
+              couples multi-tenant data isolation with explicit claim
+              boundaries—documenting verifiable MVP capabilities and
+              architectural limits.
             </p>
           </div>
         </div>
@@ -55,11 +50,11 @@ export function ActArchitectureScope() {
                   <Cpu className="h-3.5 w-3.5" />
                 </div>
 
-                <h3 className="font-mono text-base sm:text-lg font-bold uppercase tracking-tight text-obsidian mb-2">
+                <h3 className="font-sans text-lg sm:text-xl font-bold uppercase tracking-tight text-obsidian mb-2">
                   {layer.layer}
                 </h3>
 
-                <div className="border-y border-hairline-light py-2 mb-4 font-mono text-[10px] text-steel uppercase tracking-[0.1em]">
+                <div className="py-2 mb-4 font-mono text-[10px] text-steel uppercase tracking-[0.1em]">
                   {layer.stack}
                 </div>
 
@@ -68,18 +63,18 @@ export function ActArchitectureScope() {
                 </p>
               </div>
 
-              <div className="space-y-1.5 border-t border-obsidian pt-3">
-                <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-obsidian font-bold">
-                  KEY ARTIFACTS
+              <div className="space-y-2 pt-3 border-t border-hairline-light">
+                <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-steel font-bold">
+                  CORE MODULES
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {layer.keyModules.map((mod) => (
-                    <code
+                    <span
                       key={mod}
-                      className="border border-obsidian bg-paper-muted px-2 py-0.5 font-mono text-[10px] text-obsidian"
+                      className="bg-paper-muted px-2 py-0.5 font-mono text-[10px] text-obsidian"
                     >
                       {mod}
-                    </code>
+                    </span>
                   ))}
                 </div>
               </div>
@@ -96,16 +91,16 @@ export function ActArchitectureScope() {
                 <span className="inline-flex h-5 w-5 items-center justify-center bg-obsidian text-paper">
                   <Check className="h-3 w-3 text-vermillion" />
                 </span>
-                <span>VERIFIED MVP CAPABILITIES (PERTAMUDA REPOSITORY)</span>
+                <span>VERIFIED MVP CAPABILITIES</span>
               </div>
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {PROTOTYPE_BOUNDARIES.currentCapabilities.map((cap) => (
                   <div
                     key={cap}
-                    className="border border-obsidian bg-paper-muted p-3 font-sans text-xs sm:text-sm text-obsidian flex items-start gap-3"
+                    className="flex items-start gap-3 font-sans text-xs sm:text-sm text-obsidian py-1"
                   >
-                    <span className="mt-1 h-1.5 w-1.5 bg-vermillion shrink-0" />
-                    <span>{cap}</span>
+                    <span className="mt-1.5 h-1.5 w-1.5 bg-vermillion shrink-0" />
+                    <span className="leading-relaxed">{cap}</span>
                   </div>
                 ))}
               </div>
@@ -116,16 +111,16 @@ export function ActArchitectureScope() {
                 <span className="inline-flex h-5 w-5 items-center justify-center bg-vermillion text-paper">
                   <X className="h-3 w-3" />
                 </span>
-                <span>EXPLICIT PROTOTYPE BOUNDARIES &amp; SCIENTIFIC NON-CLAIMS</span>
+                <span>EXPLICIT PROTOTYPE BOUNDARIES &amp; NON-CLAIMS</span>
               </div>
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {PROTOTYPE_BOUNDARIES.explicitNonClaims.map((nonClaim) => (
                   <div
                     key={nonClaim}
-                    className="border border-obsidian bg-paper p-3 font-sans text-xs sm:text-sm text-steel flex items-start gap-3"
+                    className="flex items-start gap-3 font-sans text-xs sm:text-sm text-steel py-1"
                   >
                     <ShieldAlert className="h-4 w-4 text-vermillion shrink-0 mt-0.5" />
-                    <span>{nonClaim}</span>
+                    <span className="leading-relaxed">{nonClaim}</span>
                   </div>
                 ))}
               </div>
@@ -140,9 +135,8 @@ export function ActArchitectureScope() {
                 <span>CROSS-SECTOR EXPANSION ROADMAP</span>
               </div>
               <p className="font-sans text-xs sm:text-sm text-steel leading-relaxed mb-6">
-                While NASIR’s MVP targets upstream and midstream oil &amp; gas
-                pressure vessels, its deterministic `RiskProvider` contract and
-                interval emission engine are architected to scale into heavy
+                Engineered for upstream and midstream facilities, NASIR’s
+                deterministic calculation contracts scale across heavy
                 industrial sectors:
               </p>
 
@@ -155,7 +149,7 @@ export function ActArchitectureScope() {
                     indexTag={sector.code}
                     className="p-5"
                   >
-                    <h4 className="font-mono text-base font-bold uppercase text-obsidian mb-2">
+                    <h4 className="font-sans text-base font-bold uppercase tracking-tight text-obsidian mb-1.5">
                       {sector.title}
                     </h4>
                     <p className="font-sans text-xs text-steel leading-relaxed">
@@ -166,21 +160,19 @@ export function ActArchitectureScope() {
               </div>
             </div>
 
-            {/* Test Suite Verification Box */}
-            <div className="border border-obsidian bg-obsidian text-paper p-5 chamfer-tr font-mono text-xs">
-              <div className="flex items-center justify-between text-[10px] text-vermillion uppercase tracking-[0.15em] mb-2">
-                <span>AUTOMATED PEST PHP VERIFICATION</span>
-                <span>CI PASSING</span>
+            {/* Test Suite Verification Box (No raw PHP test file paths) */}
+            <div className="bg-obsidian text-paper p-5 chamfer-tr font-mono text-xs">
+              <div className="flex items-center justify-between text-[10px] text-vermillion uppercase tracking-[0.15em] mb-2 font-bold">
+                <span>AUTOMATED DOMAIN VERIFICATION</span>
+                <span>CI VERIFIED</span>
               </div>
-              <div className="text-paper font-bold mb-1">
-                tests/Unit/NasirDomainFormulasTest.php
+              <div className="text-paper font-semibold mb-2 text-sm font-sans">
+                Deterministic Mathematical Invariants
               </div>
-              <div className="text-paper font-bold mb-2">
-                tests/Feature/NasirMultiTenancyPolicyTest.php
-              </div>
-              <p className="font-sans text-xs text-steel-light">
-                Verifies 24h freshness window null propagation, interval overlap
-                rejection, and cross-organization policy isolation.
+              <p className="font-sans text-xs text-steel-light leading-relaxed">
+                Automated test suites independently verify 24h freshness window null
+                propagation, interval overlap rejection, and cross-organization tenant
+                isolation before deployment.
               </p>
             </div>
           </div>

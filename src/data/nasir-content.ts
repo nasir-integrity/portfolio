@@ -30,7 +30,7 @@ export interface PipelineStage {
     value: string;
     status: "NOMINAL" | "WARNING" | "CRITICAL" | "VERIFIED";
   }[];
-  sourceModulePath: string;
+  sourceModulePath?: string;
 }
 
 export interface VesselSegmentSpec {
@@ -142,9 +142,9 @@ export const STANDARDS_COMPARISONS: StandardComparison[] = [
     standardTitle: "API 580 Risk-Based Inspection Triage",
     frameworkFocus: "Mechanical Integrity & Corrosion Prioritization",
     legacyFailureMode:
-      "Periodic spreadsheet inspections detached from live pressure deviations; missing sensor values silently coerced to 0, masking high-risk vessel degradation.",
+      "Spreadsheets silently coerce missing sensor readings to zero, masking critical vessel wall degradation.",
     nasirDeterministicProtocol:
-      "Evaluates ultrasonic wall-loss percentage, differential pressure against asset baseline, and optical methane sniffer signals within a strict 24-hour freshness window.",
+      "Triages wall loss, pressure delta, and methane sniffer telemetry within a strict 24-hour window.",
     formulaOrConstraint:
       "composite = 0.35 * corrosion + 0.40 * leak + 0.25 * emission_signal",
     metrics: [
@@ -160,9 +160,9 @@ export const STANDARDS_COMPARISONS: StandardComparison[] = [
     standardTitle: "OGMP 2.0 Fugitive Methane Quantification",
     frameworkFocus: "Audit-Grade Mass Flow Integration & Claim Boundaries",
     legacyFailureMode:
-      "Conflating ambient ppm concentration spikes with annual carbon tonnage, or double-counting overlapping inspection intervals during regulatory audits.",
+      "Conflating ambient ppm spikes with annual carbon mass, or double-counting overlapping intervals.",
     nasirDeterministicProtocol:
-      "Strictly separates operational risk triage scores (0-100) from fugitive emissions mass. Computes CH4 mass exclusively from validated kg/h mass flow rates integrated over non-overlapping intervals.",
+      "Integrates validated kg/h mass flow rates over non-overlapping intervals with explicit temporal coverage ratios.",
     formulaOrConstraint:
       "methane_mass_kg = sum(methane_rate_kg_h * (interval_end - observed_at))",
     metrics: [
@@ -182,11 +182,10 @@ export const PIPELINE_STAGES: PipelineStage[] = [
     title: "Asset Registration & 3D Spatial Mapping",
     subtitle: "Multi-tenant facility hierarchy with interactive 3D component topology",
     summary:
-      "Operators register critical process equipment—3-phase horizontal separators, storage tanks, flanges, relief valves, and compressor seals—within a strict multi-tenant organization and facility boundary. Each unit binds physical nominal wall thickness and baseline pressure directly to an interactive 3D digital twin.",
+      "Registers pressure vessels and pipelines within multi-tenant facilities, binding nominal wall thickness and baseline operating pressure directly to 3D spatial models.",
     technicalDetails: [
-      "Organization -> Facility -> Asset relational hierarchy enforced by Laravel Policies",
-      "Nominal wall thickness (mm) and baseline operating pressure (bar) stored per asset",
-      "Interactive 3D segment mapping for Flange F-101, Shell Zone A, Relief Valve EV-01, and Nozzle N-02",
+      "Multi-tenant organization boundary and asset relational hierarchy",
+      "Nominal wall thickness and baseline operating pressure bound to 3D digital twin",
     ],
     telemetryReadout: [
       { key: "ASSET_TAG", value: "SEP-3P-104A", status: "VERIFIED" },
@@ -194,7 +193,6 @@ export const PIPELINE_STAGES: PipelineStage[] = [
       { key: "BASELINE_PRESSURE", value: "8.60 BAR", status: "NOMINAL" },
       { key: "TENANT_ISOLATION", value: "ORG_POLICY_ACTIVE", status: "VERIFIED" },
     ],
-    sourceModulePath: "app/Http/Controllers/AssetController.php",
   },
   {
     stepNumber: "02",
@@ -203,11 +201,10 @@ export const PIPELINE_STAGES: PipelineStage[] = [
     title: "Validated Field Observation CSV Import",
     subtitle: "Schema-checked batch ingestion with row-level quality quarantine",
     summary:
-      "Field inspection teams upload ultrasonic thickness readings, differential pressure logs, optical gas imaging (OGI) ppm concentrations, and Hi-Flow Sampler kg/h mass rates via structured CSV batches. ImportCsvAction validates timestamps, units, and numeric bounds before committing to the database.",
+      "Ingests field telemetry batches with automated row-level schema validation, quarantining malformed timestamps and negative intervals without blocking valid data.",
     technicalDetails: [
-      "Supports 4 canonical parameters: wall_loss (%), pressure (bar), methane_concentration (ppm), methane_mass_rate (kg/h)",
-      "Automatically flags malformed rows or negative intervals without aborting valid observations",
-      "Records immutable Import batch metadata with SHA-256 evidence traceability and audit event logs",
+      "Validates wall loss, pressure delta, methane concentration, and mass rate bounds",
+      "Automated row-level quarantine with cryptographic evidence traceability",
     ],
     telemetryReadout: [
       { key: "IMPORT_BATCH", value: "IMP-2026-1014", status: "VERIFIED" },
@@ -215,7 +212,6 @@ export const PIPELINE_STAGES: PipelineStage[] = [
       { key: "QUARANTINED", value: "4 ROWS (INTERVAL_ERR)", status: "WARNING" },
       { key: "AUDIT_HASH", value: "SHA256:9F8A..3C1E", status: "VERIFIED" },
     ],
-    sourceModulePath: "app/Actions/Imports/ImportCsvAction.php",
   },
   {
     stepNumber: "03",
@@ -224,12 +220,10 @@ export const PIPELINE_STAGES: PipelineStage[] = [
     title: "Deterministic Integrity & Risk Triage Computation",
     subtitle: "Weighted composite scoring with strict 24-hour freshness enforcement",
     summary:
-      "DemoRiskProvider evaluates the latest valid observation for each parameter inside a rolling 24-hour window. It computes normalized sub-scores (0-100) for Corrosion, Leak Deviation, and Emission Signal, combining them into a Composite Integrity Score that assigns assets into Critical, High, Medium, or Low priority tiers.",
+      "Computes normalized risk across wall loss (35%), pressure deviation (40%), and methane sniffers (25%). Missing or stale sensors strictly output NULL.",
     technicalDetails: [
-      "Corrosion Score (35%): clamp100((wall_loss_pct / 50.0) * 100.0)",
-      "Leak Score (40%): clamp100((|pressure - baseline| / baseline / 0.20) * 100.0)",
-      "Emission Signal (25%): clamp100((methane_ppm / 100.0) * 100.0)",
-      "Zero-substitution prohibition: missing or >24h stale inputs yield composite = NULL ('Insufficient Data')",
+      "Normalized sub-indices: Corrosion (35%), Leak Deviation (40%), Emission Signal (25%)",
+      "Strict null-safety: missing or >24h stale inputs yield composite NULL (Insufficient Data)",
     ],
     telemetryReadout: [
       { key: "CORROSION_IDX", value: "64.0 / 100", status: "WARNING" },
@@ -237,7 +231,6 @@ export const PIPELINE_STAGES: PipelineStage[] = [
       { key: "EMISSION_SIGNAL_IDX", value: "80.0 / 100", status: "CRITICAL" },
       { key: "COMPOSITE_TRIAGE", value: "75.0 [CRITICAL TIER]", status: "CRITICAL" },
     ],
-    sourceModulePath: "app/Services/Risk/DemoRiskProvider.php",
   },
   {
     stepNumber: "04",
@@ -246,11 +239,10 @@ export const PIPELINE_STAGES: PipelineStage[] = [
     title: "Fugitive Methane Mass & CO2e Integration",
     subtitle: "Time-window clipping, overlap rejection, and temporal coverage ratio",
     summary:
-      "EmissionCalculator integrates validated methane_mass_rate (kg/h) observations across the reporting period. Overlapping intervals on the same asset are deterministically rejected to prevent double counting, while temporal gaps are exposed through an explicit coverage ratio (0.00 to 1.00).",
+      "Integrates validated mass flow rates (kg/h) into verified CH4 mass and CO2e tonnage, automatically rejecting overlapping intervals to prevent double counting.",
     technicalDetails: [
-      "Clips observation intervals strictly to [periodStart, periodEnd) before multiplying rate * hours",
-      "Computes CO2e equivalence using configurable Global Warming Potential (GWP-100 = 28x or GWP-20 = 84x)",
-      "Stores input_refs_json linking every calculated kilogram back to exact observation primary keys",
+      "Clips observation intervals strictly to reporting window with temporal coverage ratios",
+      "Deterministic overlap guard rejects double-counted intervals during regulatory audits",
     ],
     telemetryReadout: [
       { key: "METHANE_MASS", value: "412.80 KG CH4", status: "WARNING" },
@@ -258,7 +250,6 @@ export const PIPELINE_STAGES: PipelineStage[] = [
       { key: "COVERAGE_RATIO", value: "0.94 (676.8 / 720H)", status: "VERIFIED" },
       { key: "OVERLAP_REJECTED", value: "1 INTERVAL SKIPPED", status: "NOMINAL" },
     ],
-    sourceModulePath: "app/Services/Emissions/EmissionCalculator.php",
   },
   {
     stepNumber: "05",
@@ -267,11 +258,10 @@ export const PIPELINE_STAGES: PipelineStage[] = [
     title: "Risk-Prioritized Maintenance Task Dispatch",
     subtitle: "Closed-loop corrective & preventive work orders tied to asset anomalies",
     summary:
-      "Operational managers convert high and critical risk assessments directly into actionable field maintenance tickets. Each work order locks onto the specific asset segment, urgency tier, target SLA deadline, assigned reliability engineer, and field inspection verification notes.",
+      "Dispatches corrective work orders mapped directly to risk urgency tiers, preventing silent deferral of critical relief valve and flange anomalies.",
     technicalDetails: [
-      "Priority tiers (Urgent, High, Normal, Low) mapped directly from API 580 composite risk thresholds",
-      "Lifecycle tracking from Open -> In Progress -> Verification -> Closed with full audit trail",
-      "Prevents silent deferral of critical relief-valve or flange gasket integrity anomalies",
+      "Priority tiers mapped directly from API 580 composite risk thresholds",
+      "Closed-loop dispatch locking target segment, SLA deadline, and audit trail",
     ],
     telemetryReadout: [
       { key: "WORK_ORDER", value: "WO-2026-089", status: "CRITICAL" },
@@ -279,7 +269,6 @@ export const PIPELINE_STAGES: PipelineStage[] = [
       { key: "SLA_DEADLINE", value: "48H CORRECTIVE", status: "WARNING" },
       { key: "ASSIGNED_CREW", value: "RELIABILITY_UNIT_02", status: "VERIFIED" },
     ],
-    sourceModulePath: "app/Http/Controllers/MaintenanceTaskController.php",
   },
   {
     stepNumber: "06",
@@ -288,11 +277,10 @@ export const PIPELINE_STAGES: PipelineStage[] = [
     title: "Compliance Reporting & Immutable Audit Export",
     subtitle: "Versioned regulatory dossiers with method provenance and CSV/Print export",
     summary:
-      "ReportBuilder compiles frozen, versioned compliance snapshots combining asset risk summaries, fugitive methane totals, temporal coverage ratios, and explicit methodology exclusions. Auditors can inspect the exact MethodVersion formula, verify input observation IDs, print official dossiers, or export raw CSV evidence.",
+      "Compiles frozen, immutable compliance dossiers with explicit mathematical provenance and temporal coverage ratios for regulatory review.",
     technicalDetails: [
-      "Immutable ReportVersion snapshots preserve exact numbers even if subsequent telemetry arrives",
-      "Explicitly prints exclusions (e.g., skipped overlapping intervals or insufficient sensor windows)",
-      "Dedicated print-ready layout and raw observation CSV export for regulatory verification",
+      "Immutable compliance snapshots preserve audited calculations against late arrivals",
+      "Explicit audit exclusions, methodology provenance, and raw CSV verification",
     ],
     telemetryReadout: [
       { key: "REPORT_VERSION", value: "RPT-V4.2-LOCKED", status: "VERIFIED" },
@@ -300,7 +288,6 @@ export const PIPELINE_STAGES: PipelineStage[] = [
       { key: "AUDIT_EVENTS", value: "100% TRACEABLE", status: "NOMINAL" },
       { key: "EXPORT_FORMATS", value: "PRINT PDF / RAW CSV", status: "NOMINAL" },
     ],
-    sourceModulePath: "app/Services/Reporting/ReportBuilder.php",
   },
 ];
 
@@ -388,15 +375,15 @@ export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
     id: "arch-backend",
     code: "LAYER 01 // CORE ENGINE",
     layer: "Laravel 13 & PHP 8.2+ Domain Services",
-    stack: "Laravel 13 • Eloquent ORM • Fortify + Passkeys • Pest PHP",
+    stack: "Laravel 13 • Eloquent ORM • Fortify + Passkeys • Automated Test Suite",
     responsibility:
       "Executes deterministic API 580 risk evaluations, OGMP 2.0 interval clipping, CSV batch validation, multi-tenant policy enforcement, and immutable audit logging.",
     keyModules: [
-      "DemoRiskProvider.php",
-      "EmissionCalculator.php",
-      "ImportCsvAction.php",
-      "ReportBuilder.php",
-      "AuditLogger.php",
+      "API 580 Risk Evaluator",
+      "OGMP 2.0 Mass Integrator",
+      "CSV Schema Ingestion",
+      "Compliance Report Engine",
+      "Audit Event Logger",
     ],
   },
   {
@@ -407,10 +394,10 @@ export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
     responsibility:
       "Delivers zero-reload operational dashboards, interactive evidence tables, and print-ready regulatory audit views without client-side state drift.",
     keyModules: [
-      "nasir-dashboard-layout.tsx",
-      "dashboard/risk/index.tsx",
-      "dashboard/emissions/index.tsx",
-      "dashboard/reports/show.tsx",
+      "Operations Overview",
+      "Risk Triage Console",
+      "Emissions Mass Monitor",
+      "Regulatory Audit Dossier",
     ],
   },
   {
@@ -421,9 +408,9 @@ export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
     responsibility:
       "Renders physically based metallic pressure vessels, pulsing SCADA telemetry beacons, and clickable 4-segment component inspection geometry.",
     keyModules: [
-      "facility-hero-scene.tsx",
-      "asset-inspector-scene.tsx",
-      "asset-inspector-data.ts",
+      "Facility Digital Twin",
+      "Asset Component Inspector",
+      "Component Topology Geometry",
     ],
   },
   {
@@ -434,27 +421,24 @@ export const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
     responsibility:
       "Enforces strict tenant boundaries across facilities, assets, imports, and reports while recording every state mutation in an append-only audit log.",
     keyModules: [
-      "NasirMultiTenancyPolicyTest.php",
-      "NasirDomainFormulasTest.php",
-      "AssetPolicy.php",
-      "ReportPolicy.php",
+      "Multi-Tenancy Policies",
+      "Domain Invariant Tests",
+      "Asset Access Control",
+      "Compliance Dossier Integrity",
     ],
   },
 ];
 
 export const PROTOTYPE_BOUNDARIES = {
   currentCapabilities: [
-    "Validated CSV telemetry ingestion with row-level quality quarantine and SHA-256 evidence tracking",
+    "Validated CSV telemetry ingestion with row-level quarantine and cryptographic evidence tracking",
     "Deterministic API 580 triage scoring with 24-hour freshness window and strict NULL propagation",
-    "OGMP 2.0 mass rate (kg/h) interval integration with overlap rejection and coverage ratio calculation",
-    "Interactive 3D pressure vessel digital twin and 4-segment component risk inspector",
-    "Multi-tenant RBAC, WebAuthn Passkey authentication, and immutable ReportVersion audit snapshots",
+    "OGMP 2.0 mass rate interval integration with overlap rejection and spatial 3D inspection",
   ],
   explicitNonClaims: [
-    "Does NOT claim direct live hardware PLC/SCADA Modbus/OPC-UA streaming in the MVP (operates via validated CSV batches)",
-    "Does NOT convert ambient ppm sniffer readings into carbon tonnage without validated kg/h mass flow measurements",
-    "Does NOT substitute 0 for missing or stale (>24h) sensor telemetry—always outputs NULL ('Insufficient Data')",
-    "Does NOT directly submit filings to ministry API gateways or sovereign carbon credit registries",
+    "MVP operates via validated CSV batches; does not claim direct hardware PLC/SCADA streaming",
+    "Ambient ppm sniffer readings never yield carbon mass without verified kg/h flow measurements",
+    "Missing or stale telemetry strictly propagates NULL; never coerced or substituted with zero",
   ],
   sectorExpansionRoadmap: [
     {
@@ -474,7 +458,6 @@ export const PROTOTYPE_BOUNDARIES = {
 
 /**
  * Deterministic NASIR Domain Formula Helpers
- * Mirrors app/Services/Risk/DemoRiskProvider.php and app/Services/Emissions/EmissionCalculator.php
  */
 export function clamp100(val: number): number {
   return Math.max(0, Math.min(100, Number(val.toFixed(1))));

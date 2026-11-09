@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import * as m from "motion/react-m";
 import { Activity, AlertOctagon, Flame, RotateCcw, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChamferCard } from "@/components/ui/chamfer-card";
 import {
   VESSEL_SEGMENTS,
   evaluateNasirEmission,
@@ -20,7 +19,7 @@ const AssetInspectorScene = dynamic(
     loading: () => (
       <div className="flex h-[380px] w-full items-center justify-center border border-hairline-dark bg-obsidian font-mono text-xs uppercase tracking-[0.16em] text-steel-light">
         <span className="inline-block h-2 w-2 bg-vermillion mr-2 animate-pulse" />
-        LOADING 4-SEGMENT 3D INSPECTOR...
+        LOADING 3D SEGMENT INSPECTOR...
       </div>
     ),
   }
@@ -28,7 +27,7 @@ const AssetInspectorScene = dynamic(
 
 export function ActRiskSimulator() {
   const [selectedSegment, setSelectedSegment] = useState<VesselSegmentSpec>(
-    VESSEL_SEGMENTS[2] // Default to EV-01 Critical Relief Valve
+    VESSEL_SEGMENTS[2]
   );
 
   const [activeMode, setActiveMode] = useState<"risk" | "emissions">("risk");
@@ -88,34 +87,28 @@ export function ActRiskSimulator() {
       className="relative w-full border-b border-obsidian bg-obsidian text-paper"
     >
       <div className="mx-auto max-w-[1440px] border-x border-hairline-dark">
-        {/* Top Section Header */}
-        <div className="border-b border-hairline-dark px-6 sm:px-10 py-10 lg:py-14 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div className="max-w-3xl">
-            <h2 className="font-sans text-3xl sm:text-5xl font-bold uppercase tracking-tight leading-[1.05] text-paper">
-              INSPECT 3D VESSEL SEGMENTS &amp; TEST DETERMINISTIC FORMULAS.
+        {/* Compact Header */}
+        <div className="border-b border-hairline-dark px-6 sm:px-12 py-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h2 className="font-sans text-3xl sm:text-5xl font-bold uppercase tracking-tight leading-[1.02] text-paper">
+              INTERACTIVE 3D RISK &amp; CH4 SIMULATOR.
             </h2>
-            <p className="mt-4 font-sans text-sm sm:text-base text-steel-light leading-relaxed">
-              Explore live mathematical models across API 580 mechanical risk
-              and OGMP 2.0 fugitive emissions mass flow.
-            </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outlineDark"
-              size="sm"
-              onClick={() => handleSelectSegment(selectedSegment)}
-            >
-              <RotateCcw className="h-3.5 w-3.5 text-vermillion" />
-              <span>RESET SEGMENT TELEMETRY</span>
-            </Button>
-          </div>
+          <Button
+            variant="outlineDark"
+            size="sm"
+            onClick={() => handleSelectSegment(selectedSegment)}
+          >
+            <RotateCcw className="h-3.5 w-3.5 text-vermillion" />
+            <span>RESET TELEMETRY</span>
+          </Button>
         </div>
 
-        {/* Main 12-Column Interactive Workbench */}
+        {/* 12-Column Interactive Workbench */}
         <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-hairline-dark">
-          {/* Left 6 Columns: 3D Segment Inspector + Active Component Dossier */}
-          <div className="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between space-y-6">
+          {/* Left 6 Columns: 3D Segment Inspector + Compact Telemetry Strip */}
+          <div className="lg:col-span-6 p-6 sm:p-10 flex flex-col justify-between space-y-5">
             <div>
               <div className="flex items-center justify-between mb-3 font-mono text-xs uppercase tracking-[0.15em]">
                 <span className="text-vermillion font-bold">
@@ -132,57 +125,41 @@ export function ActRiskSimulator() {
               />
             </div>
 
-            {/* Active Segment Physical Metadata Card */}
-            <ChamferCard
-              theme="dark"
-              cut="tr"
-              indexTag={`COMPONENT METADATA // ${selectedSegment.code}`}
-              className="p-5"
-            >
-              <p className="font-sans text-xs sm:text-sm text-paper leading-relaxed mb-4">
-                {selectedSegment.description}
-              </p>
-              <div className="border-t border-hairline-dark pt-3 grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
-                <div>
-                  <div className="text-[10px] text-steel-light uppercase">
-                    NOMINAL WALL
-                  </div>
-                  <div className="text-paper font-bold mt-0.5">
-                    {selectedSegment.nominalThicknessMm.toFixed(1)} mm
-                  </div>
+            {/* Compact 3-Stat Telemetry Bar (Replaces Prose Dossier Card) */}
+            <div className="grid grid-cols-3 gap-4 border-t border-hairline-dark pt-4 font-mono text-xs">
+              <div>
+                <div className="text-[10px] text-steel-light uppercase">
+                  NOMINAL WALL
                 </div>
-                <div>
-                  <div className="text-[10px] text-steel-light uppercase">
-                    MEASURED WALL
-                  </div>
-                  <div className="text-vermillion font-bold mt-0.5">
-                    {(
-                      selectedSegment.nominalThicknessMm *
-                      (1 - wallLossPct / 100)
-                    ).toFixed(2)}{" "}
-                    mm
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-steel-light uppercase">
-                    BASELINE PRESSURE
-                  </div>
-                  <div className="text-paper font-bold mt-0.5">
-                    {selectedSegment.baselinePressureBar.toFixed(1)} bar
-                  </div>
+                <div className="text-sm sm:text-base text-paper font-bold mt-0.5">
+                  {selectedSegment.nominalThicknessMm.toFixed(1)} mm
                 </div>
               </div>
-              <div className="mt-3 pt-3 border-t border-hairline-dark font-mono text-[11px] text-steel-light">
-                <span className="text-vermillion font-semibold">
-                  FAILURE MODE:{" "}
-                </span>
-                {selectedSegment.failureMechanism}
+              <div>
+                <div className="text-[10px] text-steel-light uppercase">
+                  MEASURED WALL
+                </div>
+                <div className="text-sm sm:text-base text-vermillion font-bold mt-0.5">
+                  {(
+                    selectedSegment.nominalThicknessMm *
+                    (1 - wallLossPct / 100)
+                  ).toFixed(2)}{" "}
+                  mm
+                </div>
               </div>
-            </ChamferCard>
+              <div>
+                <div className="text-[10px] text-steel-light uppercase">
+                  BASELINE PRESSURE
+                </div>
+                <div className="text-sm sm:text-base text-paper font-bold mt-0.5">
+                  {selectedSegment.baselinePressureBar.toFixed(1)} bar
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Right 6 Columns: 2-Tab Interactive Mode Switcher */}
-          <div className="lg:col-span-6 p-6 sm:p-10 space-y-6 bg-obsidian-elevated/40 flex flex-col justify-between">
+          <div className="lg:col-span-6 p-6 sm:p-10 bg-obsidian-elevated/40 flex flex-col justify-between">
             <div>
               {/* Tab Switcher Header */}
               <div className="grid grid-cols-2 border border-hairline-dark bg-obsidian mb-6 font-mono text-xs">
@@ -216,12 +193,11 @@ export function ActRiskSimulator() {
               {activeMode === "risk" && (
                 <m.div
                   key="engine-risk"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-4 font-mono text-xs"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.22 }}
+                  className="space-y-3.5 font-mono text-xs"
                 >
-                  {/* Wall Loss Slider */}
                   <div className="bg-obsidian p-3.5">
                     <div className="flex items-center justify-between mb-2">
                       <label
@@ -247,22 +223,15 @@ export function ActRiskSimulator() {
                       onChange={(e) => setWallLossPct(Number(e.target.value))}
                       className="w-full accent-[#FF3B00] cursor-pointer"
                     />
-                    <div className="flex justify-between text-[10px] text-steel-light mt-1">
-                      <span>0% (Intact)</span>
-                      <span>25% (Moderate)</span>
-                      <span>50%+ (100 Score Cap)</span>
-                    </div>
                   </div>
 
-                  {/* Operating Pressure Slider */}
                   <div className="bg-obsidian p-3.5">
                     <div className="flex items-center justify-between mb-2">
                       <label
                         htmlFor="slider-pressure"
                         className="uppercase tracking-[0.12em] text-paper"
                       >
-                        2. OPERATING PRESSURE (BASELINE{" "}
-                        {selectedSegment.baselinePressureBar} BAR)
+                        2. OPERATING PRESSURE ({selectedSegment.baselinePressureBar} BAR BASE)
                       </label>
                       <span className="text-vermillion font-bold">
                         {pressureBar.toFixed(1)} BAR
@@ -278,23 +247,15 @@ export function ActRiskSimulator() {
                       onChange={(e) => setPressureBar(Number(e.target.value))}
                       className="w-full accent-[#FF3B00] cursor-pointer"
                     />
-                    <div className="flex justify-between text-[10px] text-steel-light mt-1">
-                      <span>6.0 bar (-30% drop)</span>
-                      <span>
-                        {selectedSegment.baselinePressureBar} bar (Nominal)
-                      </span>
-                      <span>10.5 bar (Overpressure)</span>
-                    </div>
                   </div>
 
-                  {/* Methane Concentration PPM Slider */}
                   <div className="bg-obsidian p-3.5">
                     <div className="flex items-center justify-between mb-2">
                       <label
                         htmlFor="slider-ppm"
                         className="uppercase tracking-[0.12em] text-paper"
                       >
-                        3. OPTICAL METHANE SNIFFER SIGNAL (PPM)
+                        3. METHANE SNIFFER SIGNAL (PPM)
                       </label>
                       <span className="text-vermillion font-bold">
                         {methanePpm} PPM
@@ -310,98 +271,77 @@ export function ActRiskSimulator() {
                       onChange={(e) => setMethanePpm(Number(e.target.value))}
                       className="w-full accent-[#FF3B00] cursor-pointer"
                     />
-                    <div className="flex justify-between text-[10px] text-steel-light mt-1">
-                      <span>0 ppm</span>
-                      <span>50 ppm</span>
-                      <span>100+ ppm (100 Score Cap)</span>
-                    </div>
                   </div>
 
                   {/* Null-Safety & Freshness Window Toggles */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                  <div className="grid grid-cols-2 gap-2.5">
                     <button
                       type="button"
                       onClick={() => setIsWithin24h((prev) => !prev)}
-                      className={`p-3 text-left font-mono text-[11px] uppercase tracking-[0.12em] cursor-pointer ${
+                      className={`p-2.5 text-left font-mono text-[10px] uppercase tracking-[0.12em] cursor-pointer ${
                         isWithin24h
                           ? "bg-obsidian text-paper border border-hairline-dark"
                           : "bg-vermillion/15 text-vermillion border border-vermillion font-bold"
                       }`}
                     >
-                      <div className="text-[9px] text-steel-light">
-                        24H FRESHNESS GATE
-                      </div>
-                      <div className="mt-0.5">
-                        {isWithin24h
-                          ? "✓ WITHIN 24H WINDOW"
-                          : "✕ STALE (>24H) -> FORCE NULL"}
-                      </div>
+                      {isWithin24h
+                        ? "✓ 24H FRESHNESS OK"
+                        : "✕ STALE (>24H) -> NULL"}
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setSimulateMissingParam((prev) => !prev)}
-                      className={`p-3 text-left font-mono text-[11px] uppercase tracking-[0.12em] cursor-pointer ${
+                      className={`p-2.5 text-left font-mono text-[10px] uppercase tracking-[0.12em] cursor-pointer ${
                         !simulateMissingParam
                           ? "bg-obsidian text-paper border border-hairline-dark"
                           : "bg-vermillion/15 text-vermillion border border-vermillion font-bold"
                       }`}
                     >
-                      <div className="text-[9px] text-steel-light">
-                        NULL-SAFETY GUARD
-                      </div>
-                      <div className="mt-0.5">
-                        {!simulateMissingParam
-                          ? "✓ ALL 3 SENSORS PRESENT"
-                          : "✕ MISSING WALL_LOSS -> NULL"}
-                      </div>
+                      {!simulateMissingParam
+                        ? "✓ ALL SENSORS VALID"
+                        : "✕ MISSING SENSOR -> NULL"}
                     </button>
                   </div>
 
-                  {/* Computed Composite Risk Readout Box */}
-                  <div className="border border-vermillion bg-obsidian p-5 chamfer-tr mt-4">
-                    <div className="grid grid-cols-3 gap-2 border-b border-hairline-dark pb-3 mb-3 font-mono text-xs">
-                      <div>
-                        <div className="text-[10px] text-steel-light">
-                          CORROSION (35%)
+                  {/* Animated Composite Risk Gauge */}
+                  <div className="border border-vermillion bg-obsidian p-5 chamfer-tr">
+                    <div className="grid grid-cols-3 gap-3 mb-4 font-mono text-xs">
+                      {[
+                        { label: "CORROSION", val: riskResult.corrosionScore },
+                        { label: "LEAK DEV", val: riskResult.leakScore },
+                        { label: "CH4 SIGNAL", val: riskResult.emissionSignalScore },
+                      ].map((sub) => (
+                        <div key={sub.label}>
+                          <div className="flex justify-between text-[10px] text-steel-light mb-1">
+                            <span>{sub.label}</span>
+                            <span className="text-paper font-bold">
+                              {sub.val !== null ? sub.val.toFixed(0) : "NULL"}
+                            </span>
+                          </div>
+                          <div className="h-1.5 w-full bg-obsidian-surface overflow-hidden">
+                            <m.div
+                              initial={false}
+                              animate={{
+                                scaleX: sub.val !== null ? sub.val / 100 : 0,
+                              }}
+                              style={{ transformOrigin: "0% 50%" }}
+                              className="h-full w-full bg-vermillion"
+                            />
+                          </div>
                         </div>
-                        <div className="text-lg font-bold text-paper mt-0.5">
-                          {riskResult.corrosionScore !== null
-                            ? riskResult.corrosionScore.toFixed(1)
-                            : "NULL"}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-[10px] text-steel-light">
-                          LEAK DEV (40%)
-                        </div>
-                        <div className="text-lg font-bold text-paper mt-0.5">
-                          {riskResult.leakScore !== null
-                            ? riskResult.leakScore.toFixed(1)
-                            : "NULL"}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-[10px] text-steel-light">
-                          CH4 SIGNAL (25%)
-                        </div>
-                        <div className="text-lg font-bold text-paper mt-0.5">
-                          {riskResult.emissionSignalScore !== null
-                            ? riskResult.emissionSignalScore.toFixed(1)
-                            : "NULL"}
-                        </div>
-                      </div>
+                      ))}
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-hairline-dark">
                       <div>
                         <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-steel-light">
                           COMPOSITE TRIAGE SCORE
                         </div>
-                        <div className="font-mono text-2xl sm:text-3xl font-bold text-paper mt-1">
+                        <div className="font-mono text-2xl sm:text-3xl font-bold text-paper mt-0.5">
                           {riskResult.compositeScore !== null
                             ? `${riskResult.compositeScore.toFixed(1)} / 100`
-                            : "NULL // INSUFFICIENT DATA"}
+                            : "NULL // STALE OR MISSING"}
                         </div>
                       </div>
 
@@ -411,12 +351,8 @@ export function ActRiskSimulator() {
                         ) : (
                           <AlertOctagon className="h-4 w-4" />
                         )}
-                        <span>TIER: {riskResult.tier}</span>
+                        <span>{riskResult.tier}</span>
                       </div>
-                    </div>
-
-                    <div className="mt-2 font-mono text-[11px] text-steel-light">
-                      {riskResult.statusReason}
                     </div>
                   </div>
                 </m.div>
@@ -426,12 +362,12 @@ export function ActRiskSimulator() {
               {activeMode === "emissions" && (
                 <m.div
                   key="engine-emissions"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.22 }}
                   className="space-y-4 font-mono text-xs"
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="bg-obsidian p-3.5">
                       <div className="flex justify-between mb-1.5">
                         <label
@@ -464,7 +400,7 @@ export function ActRiskSimulator() {
                           htmlFor="slider-hours"
                           className="text-[11px] text-paper"
                         >
-                          MEASURED INTERVAL (OF 168H)
+                          MEASURED WINDOW (OF 168H)
                         </label>
                         <span className="text-vermillion font-bold">
                           {observedHours}h
@@ -485,37 +421,54 @@ export function ActRiskSimulator() {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
+                  <div className="grid grid-cols-2 gap-2.5 font-mono text-[10px]">
                     <button
                       type="button"
                       onClick={() => setGwpFactor(gwpFactor === 28 ? 84 : 28)}
-                      className="border border-hairline-dark bg-obsidian px-3 py-1.5 text-paper hover:border-vermillion cursor-pointer"
+                      className="border border-hairline-dark bg-obsidian p-2.5 text-left text-paper hover:border-vermillion cursor-pointer"
                     >
-                      GWP FACTOR: {gwpFactor}x (
-                      {gwpFactor === 28 ? "AR5 100-YR" : "AR5 20-YR"})
+                      GWP FACTOR: {gwpFactor}x ({gwpFactor === 28 ? "100-YR" : "20-YR"})
                     </button>
                     <button
                       type="button"
                       onClick={() => setHasOverlapAnomaly((p) => !p)}
-                      className={`border px-3 py-1.5 cursor-pointer ${
+                      className={`border p-2.5 text-left cursor-pointer ${
                         hasOverlapAnomaly
                           ? "border-vermillion bg-vermillion/15 text-vermillion font-bold"
                           : "border-hairline-dark bg-obsidian text-steel-light"
                       }`}
                     >
                       {hasOverlapAnomaly
-                        ? "✕ OVERLAP REJECTION LOG ACTIVE"
-                        : "+ SIMULATE OVERLAPPING INTERVAL"}
+                        ? "✕ OVERLAP GUARD ACTIVE"
+                        : "+ TEST INTERVAL OVERLAP"}
                     </button>
                   </div>
 
-                  <div className="border border-hairline-dark bg-obsidian p-5 font-mono mt-4">
-                    <div className="grid grid-cols-3 gap-3">
+                  <div className="border border-vermillion bg-obsidian p-5 chamfer-tr space-y-4">
+                    {/* Animated Coverage Bar */}
+                    <div>
+                      <div className="flex justify-between text-[10px] text-steel-light mb-1.5">
+                        <span>TEMPORAL COVERAGE RATIO</span>
+                        <span className="text-paper font-bold">
+                          {(emissionResult.coverageRatio * 100).toFixed(0)}% ({observedHours}H / 168H)
+                        </span>
+                      </div>
+                      <div className="h-2 w-full bg-obsidian-surface overflow-hidden">
+                        <m.div
+                          initial={false}
+                          animate={{ scaleX: emissionResult.coverageRatio }}
+                          style={{ transformOrigin: "0% 50%" }}
+                          className="h-full w-full bg-vermillion"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 pt-3 border-t border-hairline-dark">
                       <div>
                         <div className="text-[10px] text-steel-light">
-                          CH4 MASS TOTAL
+                          INTEGRATED CH4 MASS
                         </div>
-                        <div className="text-xl sm:text-2xl font-bold text-paper mt-0.5">
+                        <div className="text-2xl font-bold text-paper mt-0.5">
                           {emissionResult.methaneMassKg} kg
                         </div>
                       </div>
@@ -523,26 +476,12 @@ export function ActRiskSimulator() {
                         <div className="text-[10px] text-steel-light">
                           CO2e EQUIVALENT
                         </div>
-                        <div className="text-xl sm:text-2xl font-bold text-vermillion mt-0.5">
+                        <div className="text-2xl font-bold text-vermillion mt-0.5">
                           {emissionResult.co2eTons} tCO2e
-                        </div>
-                      </div>
-                      <div>
-                        <div className="text-[10px] text-steel-light">
-                          COVERAGE RATIO
-                        </div>
-                        <div className="text-xl sm:text-2xl font-bold text-paper mt-0.5">
-                          {(emissionResult.coverageRatio * 100).toFixed(0)}% (
-                          {emissionResult.coverageRatio})
                         </div>
                       </div>
                     </div>
                   </div>
-                  {emissionResult.exclusionNote && (
-                    <div className="border border-vermillion/50 bg-vermillion/10 px-3 py-2 font-mono text-[11px] text-vermillion">
-                      AUDIT EXCLUSION NOTE: {emissionResult.exclusionNote}
-                    </div>
-                  )}
                 </m.div>
               )}
             </div>

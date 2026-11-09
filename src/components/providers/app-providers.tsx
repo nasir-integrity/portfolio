@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
 import { LazyMotion, MotionConfig, domAnimation } from "motion/react";
+import { SiteLoader } from "@/components/ui/site-loader";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -39,6 +40,7 @@ export function AppProviders({ children }: AppProvidersProps) {
       }}
     >
       <LazyMotion features={domAnimation} strict>
+        <SiteLoader />
         <ReactLenis
           root
           options={{

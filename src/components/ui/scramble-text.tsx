@@ -4,7 +4,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 
-const INDUSTRIAL_GLYPHS = "0123456789ABCDEF!<>-_/[]{}—=+*^?#%";
+// Non-breaking industrial code glyphs (no hyphens, slashes, or soft-wrap break triggers)
+const INDUSTRIAL_GLYPHS = "0123456789ABCDEF!#%&*+<>_~^";
 
 interface ScrambleTextProps {
   text: string;
@@ -19,20 +20,20 @@ export function ScrambleText({
   className,
   as: Component = "span",
   triggerOnHover = true,
-  durationMs = 360,
+  durationMs = 340,
 }: ScrambleTextProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
   const isInView = useInView(containerRef, {
-    once: true,
-    margin: "-8% 0px -8% 0px",
+    once: false,
+    margin: "-10% 0px -10% 0px",
   });
   const [displayText, setDisplayText] = useState(text);
   const isAnimatingRef = useRef(false);
   const frameRef = useRef<number | null>(null);
-  const hasTriggeredRef = useRef(false);
+  const wasInViewRef = useRef(false);
 
   const startScramble = useCallback(() => {
-    if (isAnimatingRef.current) return;
+    if (frameRef.current) cancelAnimationFrame(frameRef.current);
     isAnimatingRef.current = true;
 
     const startTime = performance.now();
@@ -48,7 +49,7 @@ export function ScrambleText({
       const next = text
         .split("")
         .map((char, i) => {
-          if (char === " ") return " ";
+          if (char === " " || char === "\n") return char;
           if (i < settledCount) return char;
           return INDUSTRIAL_GLYPHS[
             Math.floor(Math.random() * INDUSTRIAL_GLYPHS.length)
@@ -69,17 +70,19 @@ export function ScrambleText({
     frameRef.current = requestAnimationFrame(tick);
   }, [text, durationMs]);
 
-  // Trigger rapid scramble when element enters viewport
+  // Trigger on viewport enter every time user scrolls past it (down or up)
   useEffect(() => {
-    if (isInView && !hasTriggeredRef.current) {
-      hasTriggeredRef.current = true;
+    if (isInView && !wasInViewRef.current) {
+      wasInViewRef.current = true;
       startScramble();
+    } else if (!isInView) {
+      wasInViewRef.current = false;
     }
   }, [isInView, startScramble]);
 
   // Handle external text prop changes (e.g. pipeline stage switching)
   useEffect(() => {
-    if (hasTriggeredRef.current) {
+    if (wasInViewRef.current) {
       startScramble();
     } else {
       setDisplayText(text);
@@ -95,17 +98,21 @@ export function ScrambleText({
     }
   };
 
+  const lines = displayText.split("\n");
+
   return (
     <span
       ref={containerRef}
       onMouseEnter={handleMouseEnter}
-      className={cn(
-        "inline-block select-none font-inherit text-inherit",
-        className
-      )}
+      className={cn("inline select-none font-inherit text-inherit", className)}
     >
       <Component className="inline font-inherit text-inherit">
-        {displayText}
+        {lines.map((line, idx) => (
+          <React.Fragment key={idx}>
+            {line}
+            {idx < lines.length - 1 && <br />}
+          </React.Fragment>
+        ))}
       </Component>
     </span>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -23,14 +23,31 @@ export function ScrambleText({
   durationMs = 340,
 }: ScrambleTextProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
+  const contentRef = useRef<HTMLElement>(null);
   const isInView = useInView(containerRef, {
     once: false,
     margin: "-10% 0px -10% 0px",
   });
-  const [displayText, setDisplayText] = useState(text);
   const isAnimatingRef = useRef(false);
   const frameRef = useRef<number | null>(null);
   const wasInViewRef = useRef(false);
+
+  const updateDOM = useCallback((val: string) => {
+    const el = contentRef.current;
+    if (!el) return;
+    if (!val.includes("\n")) {
+      el.textContent = val;
+      return;
+    }
+    const lines = val.split("\n");
+    el.replaceChildren(
+      ...lines.flatMap((line, idx) =>
+        idx < lines.length - 1
+          ? [document.createTextNode(line), document.createElement("br")]
+          : [document.createTextNode(line)]
+      )
+    );
+  }, []);
 
   const startScramble = useCallback(() => {
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
@@ -57,18 +74,18 @@ export function ScrambleText({
         })
         .join("");
 
-      setDisplayText(next);
+      updateDOM(next);
 
       if (progress < 1) {
         frameRef.current = requestAnimationFrame(tick);
       } else {
-        setDisplayText(text);
+        updateDOM(text);
         isAnimatingRef.current = false;
       }
     };
 
     frameRef.current = requestAnimationFrame(tick);
-  }, [text, durationMs]);
+  }, [text, durationMs, updateDOM]);
 
   // Trigger on viewport enter every time user scrolls past it (down or up)
   useEffect(() => {
@@ -85,12 +102,12 @@ export function ScrambleText({
     if (wasInViewRef.current) {
       startScramble();
     } else {
-      setDisplayText(text);
+      updateDOM(text);
     }
     return () => {
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
-  }, [text, startScramble]);
+  }, [text, startScramble, updateDOM]);
 
   const handleMouseEnter = () => {
     if (triggerOnHover) {
@@ -98,7 +115,7 @@ export function ScrambleText({
     }
   };
 
-  const lines = displayText.split("\n");
+  const initialLines = text.split("\n");
 
   return (
     <span
@@ -106,11 +123,14 @@ export function ScrambleText({
       onMouseEnter={handleMouseEnter}
       className={cn("inline select-none font-inherit text-inherit", className)}
     >
-      <Component className="inline font-inherit text-inherit">
-        {lines.map((line, idx) => (
+      <Component
+        ref={contentRef as React.Ref<any>}
+        className="inline font-inherit text-inherit"
+      >
+        {initialLines.map((line, idx) => (
           <React.Fragment key={idx}>
             {line}
-            {idx < lines.length - 1 && <br />}
+            {idx < initialLines.length - 1 && <br />}
           </React.Fragment>
         ))}
       </Component>

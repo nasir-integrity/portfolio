@@ -4,6 +4,7 @@ import React from "react";
 import * as m from "motion/react-m";
 import { ArrowUpRight } from "lucide-react";
 import { NASIR_TEAM_MEMBERS } from "@/data/nasir-content";
+import { ScrambleText } from "@/components/ui/scramble-text";
 
 export function ActTeamProfiles() {
   return (
@@ -78,7 +79,7 @@ export function ActTeamProfiles() {
               {/* Member Metadata */}
               <div>
                 <h3 className="type-title text-obsidian group-hover:text-vermillion transition-colors mb-2">
-                  {member.name}
+                  <ScrambleText text={member.name} />
                 </h3>
                 <p className="type-body text-steel text-sm sm:text-base mb-6">
                   {member.role}

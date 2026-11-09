@@ -5,6 +5,7 @@ import { useScroll, useTransform } from "motion/react";
 import * as m from "motion/react-m";
 import { STANDARDS_COMPARISONS } from "@/data/nasir-content";
 import { Standards3DScene } from "@/components/scenes/domain-visual-scenes";
+import { ScrambleText } from "@/components/ui/scramble-text";
 
 export function ActProblemStandards() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -52,12 +53,8 @@ export function ActProblemStandards() {
             className="section-pad flex flex-col justify-between bg-paper"
           >
             <div>
-              <div className="type-action text-vermillion mb-3">
-                {std.tag}
-              </div>
-
-              <h3 className="type-title text-obsidian mb-6">
-                {std.headline}
+              <h3 className="type-title text-obsidian mb-6 cursor-default">
+                <ScrambleText text={std.headline} />
               </h3>
 
               {/* 3D Interactive Spatial Object replacing Data/Formulas */}
@@ -65,24 +62,31 @@ export function ActProblemStandards() {
                 <Standards3DScene variant={std.visualType} />
               </div>
 
-              {/* Contrast Narrative: Fatal Flaw vs Physical Law */}
-              <div className="space-y-4">
-                <div className="bg-obsidian/5 p-5 border-l-2 border-vermillion">
-                  <div className="type-action text-vermillion mb-1">
-                    THE SPREADSHEET FLAW
+              {/* Open Typographic Comparison: Industry Vulnerability vs Physical Law */}
+              <div className="pt-6 border-t border-hairline-light space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2 font-mono text-xs tracking-[0.14em] uppercase text-steel">
+                    <span className="w-1.5 h-1.5 rounded-full bg-vermillion/70 inline-block" />
+                    <span>Conventional Spreadsheet Flaw</span>
                   </div>
-                  <p className="type-body text-steel text-sm sm:text-base">
+                  <p className="type-body text-steel text-sm sm:text-base leading-relaxed pl-3.5 border-l border-obsidian/20">
                     {std.problem}
                   </p>
                 </div>
 
-                <div className="bg-obsidian text-paper p-5">
-                  <div className="type-action text-vermillion mb-1">
-                    THE NASIR LAW
+                <div>
+                  <div className="flex items-center gap-2 mb-2 font-mono text-xs tracking-[0.14em] uppercase text-obsidian font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-obsidian inline-block" />
+                    <span>NASIR Deterministic Law</span>
                   </div>
-                  <p className="type-body text-paper/90 text-sm sm:text-base">
+                  <p className="type-body text-obsidian text-sm sm:text-base leading-relaxed font-medium pl-3.5 border-l-2 border-obsidian">
                     {std.solution}
                   </p>
+                </div>
+
+                <div className="pt-4 flex items-center justify-between text-xs font-mono text-steel uppercase tracking-[0.14em]">
+                  <span>STANDARD REFERENCE</span>
+                  <span className="text-vermillion font-bold">{std.tag}</span>
                 </div>
               </div>
             </div>

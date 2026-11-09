@@ -6,6 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import { ARCHITECTURE_LAYERS } from "@/data/nasir-content";
 import { Architecture3DScene } from "@/components/scenes/domain-visual-scenes";
 import { Button } from "@/components/ui/button";
+import { ScrambleText } from "@/components/ui/scramble-text";
 
 export function ActArchitectureScope() {
   const [activeLayerIdx, setActiveLayerIdx] = useState<number>(0);
@@ -44,12 +45,12 @@ export function ActArchitectureScope() {
                       : "border-hairline-light bg-paper text-obsidian hover:border-obsidian"
                   }`}
                 >
-                  <div className="type-action text-vermillion mb-2">
+                  <h3 className="type-title mb-2">
+                    <ScrambleText text={layer.title} />
+                  </h3>
+                  <div className="font-mono text-xs uppercase tracking-[0.14em] text-vermillion mb-3">
                     {layer.subtitle}
                   </div>
-                  <h3 className="type-title mb-3">
-                    {layer.title}
-                  </h3>
                   <p
                     className={`type-body text-sm sm:text-base ${
                       isActive ? "text-paper/85" : "text-steel"
